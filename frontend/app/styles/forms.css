@@ -1,0 +1,136 @@
+/* ---------- Newsletter ---------- */
+
+.letter {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: var(--space-5) calc(var(--gutter) * 2);
+  align-items: center;
+}
+
+.letter__title {
+  font-size: var(--text-h2);
+  font-weight: 300;
+  letter-spacing: -0.016em;
+}
+
+.letter__text {
+  max-width: 32rem;
+  margin-top: var(--space-3);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.letter--compact {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+
+.letter--compact .letter__title {
+  font-size: var(--text-h3);
+  font-weight: 400;
+}
+
+.letter--compact .letter__text {
+  font-size: 1rem;
+}
+
+@media (max-width: 860px) {
+  .letter,
+  .letter--compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.field-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.input,
+.textarea,
+.field-row input {
+  min-height: 3rem;
+  padding: 0 1.1rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper-raised);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+}
+
+.textarea {
+  min-height: 9rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 14px;
+  resize: vertical;
+}
+
+.input:focus-visible,
+.textarea:focus-visible,
+.field-row input:focus-visible {
+  outline-offset: 1px;
+  border-color: var(--ink);
+}
+
+.form-note {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.form-note a {
+  color: inherit;
+}
+
+.form-status {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.form-status--error {
+  color: #c4372a;
+}
+
+:root[data-theme="dark"] .form-status--error {
+  color: #ff8a7a;
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    flex-direction: column;
+  }
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--space-4);
+  max-width: var(--measure);
+}
+
+.form-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.form-field label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.form-field select.input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 1.3rem) 50%, calc(100% - 0.95rem) 50%;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}

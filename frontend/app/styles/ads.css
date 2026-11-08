@@ -1,0 +1,72 @@
+/*
+ * Ad slots always reserve their height before the ad loads, so a late ad
+ * never pushes content around (Cumulative Layout Shift stays near zero).
+ */
+.ad {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.ad__label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.ad__slot {
+  display: block;
+  width: 100%;
+}
+
+.ad--leaderboard .ad__slot {
+  min-height: 90px;
+  max-width: 970px;
+}
+
+.ad--inline .ad__slot {
+  min-height: 280px;
+}
+
+.ad--sidebar .ad__slot {
+  min-height: 600px;
+  max-width: 300px;
+}
+
+.ad--feed .ad__slot {
+  min-height: 250px;
+}
+
+@media (max-width: 760px) {
+  .ad--leaderboard .ad__slot {
+    min-height: 250px;
+  }
+}
+
+.ad-band {
+  padding-block: var(--space-7) 0;
+}
+
+.prose .ad {
+  margin-block: 2.2em !important;
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--rule);
+}
+
+/* Visible only in development or with VITE_AD_PREVIEW, to design around ads. */
+.ad__placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  border: 1px dashed var(--rule-strong);
+  border-radius: 2px;
+  background: repeating-linear-gradient(-45deg, transparent 0 10px, var(--paper-sunk) 10px 11px);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}

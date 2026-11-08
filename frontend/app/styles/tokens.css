@@ -1,0 +1,126 @@
+/*
+ * Design tokens.
+ * Light theme "Plate": Prussian ink on cool plate-glass white.
+ * Dark theme "Twilight": the blue of the sky after sunset, not a stand-in for black.
+ * Section colors are emission lines; they mark sections, never color running text.
+ */
+:root {
+  color-scheme: light;
+
+  --font-text: "Newsreader Text", "Newsreader Text Fallback", Georgia, "Times New Roman", serif;
+  --font-display: "Newsreader Display", "Newsreader Display Fallback", Georgia, "Times New Roman", serif;
+  --font-sans: "Schibsted Grotesk", "Schibsted Grotesk Fallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --paper: #f3f4f1;
+  --paper-raised: #fbfbf9;
+  --paper-sunk: #e9ebe7;
+  --ink: #0f1a2a;
+  --ink-soft: #33404f;
+  --muted: #5b6676;
+  --rule: rgb(15 26 42 / 0.13);
+  --rule-strong: rgb(15 26 42 / 0.3);
+  --link-line: rgb(15 26 42 / 0.32);
+  --focus: #2f5fd0;
+  --selection: rgb(63 111 216 / 0.2);
+
+  --night: #0c1a2e;
+  --night-raised: #13243c;
+  --night-ink: #e8ecf2;
+  --night-muted: #9aa7ba;
+  --night-rule: rgb(232 236 242 / 0.14);
+
+  --line-cosmos: #12917f;
+  --line-planets: #c88d16;
+  --line-exploration: #cf4232;
+  --line-physics: #3566d6;
+  --line-life: #4d9132;
+  --line-ideas: #7452d1;
+
+  /* Type scale: classic ratios, fluid between 360px and 1440px. */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-ui: 0.9375rem;
+  --text-body: clamp(1.125rem, 1.05rem + 0.33vw, 1.3125rem);
+  --text-lede: clamp(1.25rem, 1.12rem + 0.55vw, 1.5rem);
+  --text-card: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem);
+  --text-h3: clamp(1.4375rem, 1.25rem + 0.8vw, 1.875rem);
+  --text-h2: clamp(1.875rem, 1.5rem + 1.6vw, 2.75rem);
+  --text-h1: clamp(2.375rem, 1.55rem + 3.6vw, 4.5rem);
+  --text-hero: clamp(2.625rem, 1.45rem + 5vw, 5.75rem);
+
+  --leading-body: 1.62;
+  --leading-tight: 1.06;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6.5rem;
+
+  --gutter: clamp(1rem, 0.6rem + 1.8vw, 2rem);
+  --page: 82.5rem;
+  --measure: 42rem;
+  --radius-img: 3px;
+  --header-h: 4.25rem;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0b1626;
+    --paper-raised: #102038;
+    --paper-sunk: #081120;
+    --ink: #e6eaf0;
+    --ink-soft: #c3ccd8;
+    --muted: #94a2b6;
+    --rule: rgb(230 234 240 / 0.12);
+    --rule-strong: rgb(230 234 240 / 0.3);
+    --link-line: rgb(230 234 240 / 0.38);
+    --focus: #7fa3ff;
+    --selection: rgb(127 163 255 / 0.28);
+    --night: #071121;
+    --night-raised: #0e1c32;
+    --line-cosmos: #37c4b0;
+    --line-planets: #e8b24a;
+    --line-exploration: #f26b5b;
+    --line-physics: #6f97f4;
+    --line-life: #7fc25b;
+    --line-ideas: #a189f2;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0b1626;
+  --paper-raised: #102038;
+  --paper-sunk: #081120;
+  --ink: #e6eaf0;
+  --ink-soft: #c3ccd8;
+  --muted: #94a2b6;
+  --rule: rgb(230 234 240 / 0.12);
+  --rule-strong: rgb(230 234 240 / 0.3);
+  --link-line: rgb(230 234 240 / 0.38);
+  --focus: #7fa3ff;
+  --selection: rgb(127 163 255 / 0.28);
+  --night: #071121;
+  --night-raised: #0e1c32;
+  --line-cosmos: #37c4b0;
+  --line-planets: #e8b24a;
+  --line-exploration: #f26b5b;
+  --line-physics: #6f97f4;
+  --line-life: #7fc25b;
+  --line-ideas: #a189f2;
+}
+
+[data-section="cosmos"] { --line: var(--line-cosmos); }
+[data-section="planets"] { --line: var(--line-planets); }
+[data-section="exploration"] { --line: var(--line-exploration); }
+[data-section="physics"] { --line: var(--line-physics); }
+[data-section="life"] { --line: var(--line-life); }
+[data-section="ideas"] { --line: var(--line-ideas); }

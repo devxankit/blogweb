@@ -1,0 +1,540 @@
+/* ---------- Cover: minimal text left, the eyepiece right ---------- */
+
+.cover {
+  padding-top: var(--space-6);
+}
+
+.cover__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 13fr);
+  align-items: center;
+  gap: var(--space-6) calc(var(--gutter) * 2);
+  min-height: min(calc(100svh - 16rem), 38rem);
+}
+
+.cover__story {
+  max-width: 36rem;
+}
+
+.cover__story .kicker {
+  margin-bottom: var(--space-5);
+}
+
+.cover__title {
+  font-size: clamp(2.75rem, 1.2rem + 4.6vw, 6rem);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.cover__title a {
+  text-decoration: none;
+}
+
+.cover__dek {
+  max-width: 30rem;
+  margin-top: var(--space-5);
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.cover__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-5);
+  margin-top: var(--space-6);
+}
+
+/* The eyepiece: photograph in a round field of view, a setting circle around
+   it, and orbits that pass behind the view on one side and in front on the other. */
+.eyepiece {
+  --px: 0;
+  --py: 0;
+  position: relative;
+  justify-self: center;
+  width: min(100%, 34rem);
+  aspect-ratio: 1;
+}
+
+.eyepiece__view {
+  position: absolute;
+  inset: 15%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #050a14;
+}
+
+/* Vignetting at the edge of the field, as in a real eyepiece. */
+.eyepiece__view::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 48px 8px rgb(2 6 14 / 0.6);
+  pointer-events: none;
+}
+
+.eyepiece__view picture,
+.eyepiece__view img {
+  width: 100%;
+  height: 100%;
+}
+
+.eyepiece__view img {
+  object-fit: cover;
+  transform: translate(calc(var(--px) * -14px), calc(var(--py) * -14px)) scale(1.08);
+  transition: transform 700ms var(--ease-out);
+}
+
+.eyepiece__chart {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  transform: rotate(calc(var(--px) * 2.5deg));
+  transition: transform 900ms var(--ease-out);
+}
+
+.eyepiece__ring {
+  transform-origin: 300px 300px;
+}
+
+.eyepiece__ring circle {
+  fill: none;
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.tick {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.tick--long {
+  stroke: var(--muted);
+}
+
+.eyepiece__compass {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  fill: var(--muted);
+  text-anchor: middle;
+}
+
+.orbit path {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 0.9;
+  opacity: 0.5;
+}
+
+.orbit--accent path {
+  stroke: var(--line);
+  stroke-width: 1.6;
+  opacity: 1;
+}
+
+.orbit__body {
+  fill: var(--line);
+}
+
+.eyepiece__leader {
+  fill: none;
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+
+.eyepiece__credit {
+  position: absolute;
+  top: 91.5%;
+  right: 0;
+  display: grid;
+  gap: 0.1rem;
+  width: 14rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  text-align: right;
+  color: var(--ink-soft);
+}
+
+.eyepiece__credit span {
+  color: var(--muted);
+}
+
+/*
+ * The one orchestrated moment on the site: on first load the setting circle
+ * turns into place, the orbits draw themselves, and the view comes into focus.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .eyepiece--intro .eyepiece__ring {
+    animation: ring-in 1500ms cubic-bezier(0.3, 0, 0.15, 1) 60ms both;
+  }
+  .eyepiece--intro .orbit path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: orbit-draw 1700ms cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-delay: calc(250ms + var(--i) * 160ms);
+  }
+  .eyepiece--intro .orbit__body,
+  .eyepiece--intro .eyepiece__leader,
+  .eyepiece--intro .eyepiece__credit {
+    animation: fade-in 700ms ease-out 1600ms both;
+  }
+  .eyepiece--intro .eyepiece__view picture {
+    animation: focus-in 1800ms cubic-bezier(0.3, 0, 0.15, 1) 80ms both;
+  }
+}
+
+@keyframes ring-in {
+  from {
+    opacity: 0;
+    transform: rotate(-32deg);
+  }
+}
+
+@keyframes orbit-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes focus-in {
+  from {
+    filter: blur(14px) brightness(0.75);
+  }
+  to {
+    filter: none;
+  }
+}
+
+/* Cover lines: three more stories, as on a printed cover. */
+.cover__lines {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--rule-strong);
+}
+
+.cover-line {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--gutter) 0 0;
+}
+
+.cover-line + .cover-line {
+  padding-left: var(--gutter);
+  border-left: 1px solid var(--rule);
+}
+
+.cover-line .section-mark {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+}
+
+.cover-line__title {
+  font-family: var(--font-text);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.004em;
+}
+
+.cover-line__title a {
+  text-decoration: none;
+}
+
+.cover-line__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cover-line:hover .cover-line__title a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-line);
+}
+
+.cover-line__meta {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .cover {
+    padding-top: var(--space-5);
+  }
+  .cover__grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .eyepiece {
+    order: -1;
+    width: min(78vw, 26rem);
+  }
+  .eyepiece__credit {
+    top: 94%;
+    width: 11rem;
+  }
+  .cover__story {
+    max-width: none;
+  }
+  .cover__lines {
+    grid-template-columns: 1fr;
+  }
+  .cover-line,
+  .cover-line + .cover-line {
+    padding: var(--space-4) 0;
+    border-left: 0;
+  }
+  .cover-line + .cover-line {
+    border-top: 1px solid var(--rule);
+  }
+}
+
+/* ---------- Latest + most read ---------- */
+
+.home-latest {
+  padding-top: var(--space-8);
+}
+
+.home-latest__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: var(--space-7) calc(var(--gutter) * 2);
+}
+
+.home-latest__list {
+  border-bottom: 1px solid var(--rule);
+}
+
+.home-aside {
+  display: grid;
+  align-content: start;
+  gap: var(--space-7);
+}
+
+.home-aside__title {
+  margin-bottom: var(--space-2);
+  font-size: 1.5rem;
+}
+
+@media (max-width: 960px) {
+  .home-latest__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Editors' long reads (night band) ---------- */
+
+.picks {
+  margin-top: var(--space-9);
+  padding-block: var(--space-8);
+}
+
+.picks__head {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-4) var(--gutter);
+  align-items: end;
+  margin-bottom: var(--space-7);
+}
+
+.picks__title {
+  font-size: var(--text-h1);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.picks__intro {
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.picks__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--space-7) calc(var(--gutter) * 2);
+}
+
+.picks__side {
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+}
+
+.picks__side .story {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-2) var(--space-5);
+  align-items: start;
+}
+
+.picks__side .story__media {
+  grid-row: span 4;
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .picks__head,
+  .picks__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .picks__side .story {
+    grid-template-columns: 1fr;
+  }
+  .picks__side .story__media {
+    grid-row: auto;
+  }
+}
+
+/* ---------- Section blocks ---------- */
+
+.section-block {
+  padding-top: var(--space-8);
+}
+
+.section-block__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-7) var(--gutter);
+}
+
+.section-block__head {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.section-block__name {
+  font-size: var(--text-h3);
+}
+
+.section-block__name a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  text-decoration: none;
+}
+
+.section-block__name a::before {
+  content: "";
+  width: 2px;
+  height: 0.8em;
+  background: var(--line);
+}
+
+.section-block__name a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+@media (max-width: 960px) {
+  .section-block__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .section-block__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section feature: image left, lead story and the rest of the section right. */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  gap: var(--space-5) calc(var(--gutter) * 1.5);
+}
+
+.feature__media {
+  grid-row: 1 / span 2;
+  align-self: start;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-img);
+  background: var(--paper-sunk);
+}
+
+.feature__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feature__lead {
+  gap: var(--space-4);
+}
+
+.feature__lead .story__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 350;
+  line-height: 1.05;
+  letter-spacing: -0.016em;
+}
+
+.feature__lead .story__dek {
+  font-size: 1.125rem;
+}
+
+.feature__more {
+  align-self: end;
+}
+
+.story--compact {
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+
+.story--compact .story__title {
+  font-size: 1.125rem;
+}
+
+@media (max-width: 860px) {
+  .feature {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+  .feature__media {
+    grid-row: auto;
+  }
+}
+
+/* Front page before anything is published */
+.empty-front {
+  padding-block: calc(var(--space-7) * 2);
+  max-width: 44rem;
+}
+.empty-front__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.25rem, 1.4rem + 3vw, 4rem);
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+.empty-front__text {
+  color: var(--ink-soft, inherit);
+}

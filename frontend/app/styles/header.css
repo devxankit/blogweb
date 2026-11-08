@@ -1,0 +1,310 @@
+.site-header {
+  position: relative;
+  /* Above the fixed reading bar (40) so the menu drawer covers it. */
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Thin line above the masthead: date and tonight's Moon. */
+.sky-note {
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.sky-note__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 2.25rem;
+}
+
+.sky-note__sky {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sky-note__moon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.moon-glyph {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: none;
+}
+
+.sky-note__links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.sky-note__links a {
+  text-decoration: none;
+}
+
+.sky-note__links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: var(--header-h);
+}
+
+.wordmark {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.wordmark:hover {
+  text-decoration: none;
+}
+
+.primary-nav {
+  flex: 1;
+  min-width: 0;
+}
+
+.primary-nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 0.2rem + 1.4vw, 1.9rem);
+  list-style: none;
+}
+
+.primary-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding-block: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.primary-nav__link::before {
+  content: "";
+  width: 2px;
+  height: 0.95em;
+  background: var(--line);
+  opacity: 0;
+  transform: scaleY(0.3);
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+}
+
+.primary-nav__link:hover,
+.primary-nav__link[aria-current="page"] {
+  color: var(--ink);
+}
+
+.primary-nav__link:hover::before,
+.primary-nav__link[aria-current="page"]::before {
+  opacity: 1;
+  transform: none;
+}
+
+.masthead__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.icon-button:hover {
+  background: var(--paper-sunk);
+}
+
+.icon-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Theme toggle shows the icon for the theme you would switch to. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+    display: none;
+  }
+}
+
+.masthead__subscribe {
+  margin-left: var(--space-2);
+  min-height: 2.5rem;
+}
+
+.menu-button {
+  display: none;
+}
+
+/* Section strip for small screens: scrolls sideways, always visible. */
+.section-strip {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .primary-nav {
+    display: none;
+  }
+  .menu-button {
+    display: inline-grid;
+  }
+  .section-strip {
+    display: block;
+    border-top: 1px solid var(--rule);
+  }
+  .section-strip__list {
+    display: flex;
+    gap: var(--space-5);
+    overflow-x: auto;
+    list-style: none;
+    padding-block: 0.15rem;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+  .section-strip__list::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .sky-note__links,
+  .masthead__subscribe {
+    display: none;
+  }
+  .wordmark {
+    font-size: 1.5rem;
+  }
+  .masthead {
+    gap: var(--space-3);
+    min-height: 3.75rem;
+  }
+}
+
+/* ---------- Menu drawer ---------- */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  overflow-y: auto;
+  animation: drawer-in 220ms var(--ease-out);
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.drawer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.drawer__body {
+  display: grid;
+  gap: var(--space-7);
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.drawer__group-title {
+  margin-bottom: var(--space-3);
+}
+
+.drawer__sections {
+  display: grid;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.drawer__sections a {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding-block: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.drawer__sections a::before {
+  content: "";
+  width: 2px;
+  height: 0.75em;
+  background: var(--line);
+}
+
+.drawer__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-5);
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+}
+
+.drawer__links a {
+  text-decoration: none;
+}
+
+.drawer__links a:hover {
+  text-decoration: underline;
+}

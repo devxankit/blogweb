@@ -1,0 +1,85 @@
+import type { Article } from "../types";
+
+export const life: Article[] = [
+  {
+    slug: "the-leopard-spots-of-cheyava-falls",
+    title: "The leopard spots of Cheyava Falls",
+    dek: "A rock in an ancient Martian river valley carries chemical patterns that, on Earth, are usually made by microbes. NASA calls it a potential biosignature. Here is what that phrase does, and does not, mean.",
+    seoDescription:
+      "Perseverance found ‘leopard spots’ in a Martian rock that could be a sign of ancient life. What the evidence shows and why the samples need to come to Earth.",
+    section: "life",
+    format: "Analysis",
+    author: "sofia-mendel",
+    publishedAt: "2026-09-17T08:00:00Z",
+    cover: {
+      image: "cheyava-falls",
+      alt: "NASA’s Perseverance rover on reddish Martian bedrock beside the arrowhead-shaped rock called Cheyava Falls, with a rocky hill behind under a hazy sky.",
+      caption: "Perseverance’s selfie beside Cheyava Falls in Neretva Vallis, an ancient river channel that once fed Jezero crater’s lake. The dark hole near the rover’s arm is where it drilled the sample.",
+    },
+    tags: ["Mars", "Perseverance", "Biosignatures", "Astrobiology", "Mars Sample Return"],
+    body: [
+      { type: "p", html: "In July 2024, NASA’s Perseverance rover drilled a core from an arrowhead-shaped rock the team had nicknamed Cheyava Falls. The rock sits in Neretva Vallis, a channel carved by water that once flowed into Jezero crater, which held a lake more than three billion years ago." },
+      { type: "p", html: "What caught the scientists’ attention were dozens of millimeter-sized pale spots, each ringed with a dark rim. The rover’s instruments found that the rims are rich in iron and phosphate, and in iron sulfide. The rock also contains organic carbon compounds. In September 2025, after a year of analysis and peer review, the team published its findings and NASA described them as a potential biosignature." },
+      { type: "h2", text: "Why the spots matter" },
+      { type: "p", html: "On Earth, similar spots form in sediments when chemical reactions transfer electrons between iron, sulfur and organic matter. Those reactions release energy, and microbes often drive them to make a living. The minerals left behind, in this case likely vivianite, an iron phosphate, and greigite, an iron sulfide, are among the traces such microbial metabolism can leave in rock." },
+      {
+        type: "figure",
+        size: "column",
+        picture: {
+          image: "leopard-spots",
+          alt: "Close-up of a reddish rock surface with small pale spots ringed by dark material, with annotation labels.",
+          caption: "The ‘leopard spots’ in Cheyava Falls. The dark rims contain iron phosphate and iron sulfide minerals; the white veins are calcium sulfate.",
+        },
+      },
+      { type: "p", html: "But the same reactions can also happen without life, especially at higher temperatures. The case for biology rests partly on evidence that the rock was never heated much after it formed, and that the reactions ran under conditions where abiotic chemistry would be slow. That evidence is suggestive. It is not proof." },
+      { type: "quote", text: "A potential biosignature is a question, not an answer." },
+      { type: "h2", text: "A scale for extraordinary claims" },
+      { type: "p", html: "Astrobiologists have spent years trying to avoid the cycle of announcement and retraction that followed earlier claims, such as the 1996 report of possible microfossils in the Martian meteorite ALH84001. In 2021, a group of NASA scientists proposed a confidence scale for life detection, with seven levels running from an initial signal to independent confirmation." },
+      { type: "p", html: "On that scale, Cheyava Falls sits in the early-to-middle range: a signal has been detected, contamination by the rover is very unlikely, and the biological explanation is plausible. The higher levels require ruling out every non-biological alternative, which is extremely difficult with the instruments that can fit on a rover." },
+      { type: "h2", text: "The samples are waiting" },
+      { type: "p", html: "The core from Cheyava Falls, named Sapphire Canyon, is sealed in a tube aboard Perseverance alongside the other samples the rover has collected. In a laboratory on Earth, scientists could study it at the scale of individual mineral grains, measure isotope ratios that hint at biological processing, and look for structures no rover could resolve." },
+      { type: "p", html: "Getting them here is another matter. The plan to bring the samples home has stalled over cost and complexity, and its future depends on decisions about budgets and mission design that are still being made. A potential biosignature is a question, not an answer. The rock that might answer it is sitting on Mars, in a titanium tube, waiting for a ride." },
+    ],
+  },
+  {
+    slug: "what-tardigrades-know-about-surviving-space",
+    title: "What tardigrades know about surviving space",
+    dek: "Half a millimeter long and found almost everywhere, tardigrades can survive drying, freezing, radiation and even the vacuum of space. They are not indestructible. Their tricks are more interesting than that.",
+    seoDescription:
+      "How tardigrades survive extreme conditions, what happened when they were exposed to space, and what their proteins could mean for medicine.",
+    section: "life",
+    format: "Explainer",
+    author: "sofia-mendel",
+    publishedAt: "2026-08-05T08:00:00Z",
+    cover: {
+      image: "tardigrade",
+      alt: "Scanning electron micrograph of a tardigrade, a plump segmented animal with stubby clawed legs, in gray tones.",
+      caption: "A scanning electron micrograph of Milnesium tardigradum in its active state.",
+    },
+    tags: ["Tardigrades", "Extremophiles", "Cryptobiosis", "Astrobiology"],
+    body: [
+      { type: "p", html: "Tardigrades, also called water bears or moss piglets, are microscopic animals with eight stubby legs, each tipped with claws. More than 1,300 species have been described, living in ocean sediments, hot springs, Antarctic lakes and, most commonly, in the thin film of water on mosses and lichens. Most are less than half a millimeter long." },
+      { type: "p", html: "They are famous for surviving conditions that would kill almost anything else. But the reputation needs a correction. An active tardigrade, swimming and eating, is a fairly delicate creature. Their extreme toughness appears only when they enter a state called cryptobiosis, in which metabolism slows to an undetectable level." },
+      { type: "h2", text: "The tun" },
+      { type: "p", html: "When its environment dries out, a tardigrade pulls in its legs and head, loses almost all of its body water and curls into a compact barrel called a tun. In this state it can survive for years. Tuns have withstood temperatures close to absolute zero, brief heating well above the boiling point of water, and doses of radiation hundreds of times higher than would kill a human." },
+      { type: "p", html: "How they do it involves several strategies at once. Some tardigrade proteins, found in no other animals, form gel-like structures as the cell dries, turning the cell interior into something close to glass. Molecules are held in place rather than tearing apart, and they can be released intact when water returns." },
+      { type: "quote", text: "An active tardigrade, swimming and eating, is a fairly delicate creature." },
+      { type: "h2", text: "Ten days in orbit" },
+      { type: "p", html: "In 2007, researchers sent dried tardigrades into low Earth orbit aboard the European FOTON-M3 capsule and exposed them to open space for ten days. Many survived the vacuum and cosmic radiation, and some went on to reproduce. Those exposed to the Sun’s full ultraviolet light fared far worse, though a few still recovered. It was the first demonstration that an animal could survive direct exposure to space." },
+      { type: "p", html: "In 2019, an Israeli lunar lander called Beresheet crashed on the Moon carrying a small payload of dried tardigrades. Whether any could have survived the impact is doubtful: later experiments firing tardigrades from a gas gun found they did not survive collisions above about 900 meters per second. Either way, without water they could not revive." },
+      { type: "h2", text: "A protein for shielding DNA" },
+      { type: "p", html: "In 2016, researchers sequencing the genome of the tardigrade <em>Ramazzottius varieornatus</em> found a protein that binds to DNA and protects it. They named it Dsup, for damage suppressor. When human cells in culture were engineered to produce it, they suffered about 40 percent less DNA damage from X-rays." },
+      {
+        type: "aside",
+        title: "What tuns have survived",
+        items: [
+          { term: "Drying", detail: "Years without water, reviving within hours" },
+          { term: "Cold", detail: "Brief exposure to temperatures within a degree of absolute zero" },
+          { term: "Radiation", detail: "Doses thousands of grays; a few grays can kill a human" },
+          { term: "Space", detail: "Ten days of vacuum and cosmic radiation in low Earth orbit" },
+        ],
+      },
+      { type: "p", html: "Proteins like Dsup and the glass-forming proteins have attracted interest from researchers trying to stabilize vaccines without refrigeration, protect cells during cancer radiotherapy, or preserve tissue. For astrobiologists, tardigrades are a reminder that the limits of life are set less by how harsh an environment is than by whether an organism has a way to wait it out." },
+    ],
+  },
+];

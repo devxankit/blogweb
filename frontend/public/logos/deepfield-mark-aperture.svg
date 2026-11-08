@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Outer Focus Ring -->
+  <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.25"/>
+  <circle cx="32" cy="32" r="23" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 3" stroke-opacity="0.45"/>
+  
+  <!-- Gravitational Lensing Curved Blades / Aperture -->
+  <path d="M32 9 C43 9 52 18 52 29 C44 26 38 18 32 9Z" fill="#3566d6" fill-opacity="0.85"/>
+  <path d="M55 32 C55 43 46 52 35 52 C38 44 46 38 55 32Z" fill="#12917f" fill-opacity="0.85"/>
+  <path d="M32 55 C21 55 12 46 12 35 C20 38 26 46 32 55Z" fill="#7452d1" fill-opacity="0.85"/>
+  <path d="M9 32 C9 21 18 12 29 12 C26 20 18 26 9 32Z" fill="#c88d16" fill-opacity="0.85"/>
+
+  <!-- Secondary Inner Rings -->
+  <circle cx="32" cy="32" r="14" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.3"/>
+  <circle cx="32" cy="32" r="6" fill="#0f1a2a" stroke="currentColor" stroke-width="1"/>
+
+  <!-- Central Deep Field 4-Point Star Core -->
+  <path d="M32 19 Q32 32 19 32 Q32 32 32 45 Q32 32 45 32 Q32 32 32 19 Z" fill="#e8ecf2"/>
+  <circle cx="32" cy="32" r="2" fill="#e8b24a"/>
+</svg>
+

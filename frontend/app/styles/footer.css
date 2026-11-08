@@ -1,0 +1,91 @@
+.site-footer {
+  margin-top: var(--space-9);
+  padding-block: var(--space-8) var(--space-6);
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-7) var(--gutter);
+  padding-block: var(--space-7);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-footer__brand .wordmark {
+  font-size: 2.25rem;
+}
+
+.site-footer__mission {
+  max-width: 26rem;
+  margin-top: var(--space-4);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.site-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6) var(--gutter);
+}
+
+.site-footer__heading {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.site-footer__list {
+  display: grid;
+  gap: var(--space-2);
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+}
+
+.site-footer__list a {
+  text-decoration: none;
+}
+
+.site-footer__list a:hover {
+  text-decoration: underline;
+}
+
+.site-footer__list .section-mark {
+  font-size: var(--text-ui);
+  font-weight: 400;
+}
+
+.site-footer__letter {
+  padding-block: var(--space-7);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding-top: var(--space-5);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.site-footer__bottom p {
+  max-width: 44rem;
+}
+
+@media (max-width: 900px) {
+  .site-footer__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-footer__nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
