@@ -4,7 +4,7 @@ export const exploration: Article[] = [
   {
     slug: "voyager-one-light-day-from-home",
     title: "One light-day from home",
-    seoTitle: "Voyager 1 is nearly one light-day from Earth",
+    seoTitle: "Voyager 1 and the one light-day milestone",
     dek: "On 18 November 2026, a radio signal from Earth needs a full day to reach Voyager 1. The arithmetic of that distance explains why the mission still works, and why it cannot work for much longer.",
     seoDescription:
       "Voyager 1 reaches one light-day from Earth in November 2026. How a 23-watt transmitter still gets heard, and the engineering keeping a 1977 probe alive.",
