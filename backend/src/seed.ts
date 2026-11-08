@@ -64,6 +64,7 @@ async function main() {
           slug: a.slug,
           title: a.title,
           dek: a.dek,
+          seoTitle: a.seoTitle,
           seoDescription: a.seoDescription,
           section: a.section,
           format: a.format,

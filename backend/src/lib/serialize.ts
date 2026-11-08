@@ -117,6 +117,7 @@ export interface ArticleLike {
   slug: string;
   title: string;
   dek: string;
+  seoTitle?: string | null;
   seoDescription?: string | null;
   section: string;
   format: string;
@@ -143,6 +144,7 @@ export function summary(a: ArticleLike, images: Map<string, ImageRef>) {
     slug: a.slug,
     title: a.title,
     dek: a.dek,
+    seoTitle: a.seoTitle || undefined,
     seoDescription: a.seoDescription || undefined,
     section: a.section,
     format: a.format,

@@ -15,6 +15,7 @@ interface StoredArticle {
   slug: string;
   title: string;
   dek: string;
+  seoTitle: string;
   seoDescription: string;
   section: string;
   format: (typeof FORMATS)[number];
@@ -104,6 +105,7 @@ export default function ArticleEdit({ loaderData }: Route.ComponentProps) {
     () => ({
       title: article?.title ?? "",
       dek: article?.dek ?? "",
+      seoTitle: article?.seoTitle ?? "",
       seoDescription: article?.seoDescription ?? "",
       slug: article?.slug ?? "",
       section: article?.section ?? sections[0]?.slug ?? "",
@@ -165,6 +167,7 @@ export default function ArticleEdit({ loaderData }: Route.ComponentProps) {
         title: form.title,
         slug: slugTouched ? form.slug : "",
         dek: form.dek,
+        seoTitle: form.seoTitle,
         seoDescription: form.seoDescription,
         section: form.section,
         format: form.format,
@@ -219,6 +222,7 @@ export default function ArticleEdit({ loaderData }: Route.ComponentProps) {
 
   const coverImage = form.cover.image ? images[form.cover.image] : null;
   const seoLength = (form.seoDescription || form.dek).length;
+  const seoTitleLength = `${form.seoTitle || form.title} | CosmosLens`.length;
 
   return (
     <AdminPage
@@ -504,6 +508,22 @@ export default function ArticleEdit({ loaderData }: Route.ComponentProps) {
                 <p className="nr-field__warn">Changing the URL of a published story breaks links to it.</p>
               ) : null}
               {errors.slug ? <p className="nr-field__error">{errors.slug}</p> : null}
+            </div>
+            <div className="nr-field">
+              <label htmlFor="seo-title" className="nr-field__label">
+                Search title <span className="nr-optional">optional</span>
+              </label>
+              <input
+                id="seo-title"
+                className="nr-input"
+                value={form.seoTitle}
+                placeholder="Defaults to the headline"
+                onChange={(e) => set("seoTitle", e.target.value)}
+              />
+              <p className={seoTitleLength > 60 ? "nr-field__warn" : "nr-field__hint"}>
+                {seoTitleLength} characters with the site name. Google shows about 60. Name the topic people search for.
+              </p>
+              {errors.seoTitle ? <p className="nr-field__error">{errors.seoTitle}</p> : null}
             </div>
             <div className="nr-field">
               <label htmlFor="seo" className="nr-field__label">

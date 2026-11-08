@@ -52,6 +52,7 @@ export interface Article {
   slug: string;
   title: string;
   dek: string;
+  seoTitle?: string;
   seoDescription?: string;
   section: SectionSlug;
   format: ArticleFormat;

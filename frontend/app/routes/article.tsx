@@ -27,7 +27,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
   const { article, summary, author, section } = loaderData;
   const path = `/articles/${article.slug}`;
   return seo({
-    title: article.title,
+    title: article.seoTitle ?? article.title,
     description: article.seoDescription ?? article.dek,
     path,
     image: ogImageUrl(article.cover.image),

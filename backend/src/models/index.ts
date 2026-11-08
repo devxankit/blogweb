@@ -84,6 +84,8 @@ const articleSchema = new Schema(
     slug: { type: String, required: true, unique: true, trim: true },
     title: { type: String, required: true, trim: true },
     dek: { type: String, default: "", trim: true },
+    /** Title for search results when the headline doesn't name the topic. */
+    seoTitle: { type: String, trim: true },
     seoDescription: { type: String, trim: true },
     section: { type: String, required: true, index: true },
     format: { type: String, enum: FORMATS, required: true },

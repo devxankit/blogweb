@@ -97,6 +97,7 @@ articlesRouter.get("/:id", async (req, res) => {
       slug: d.slug,
       title: d.title,
       dek: d.dek,
+      seoTitle: d.seoTitle ?? "",
       seoDescription: d.seoDescription ?? "",
       section: d.section,
       format: d.format,
@@ -128,6 +129,7 @@ const articleInput = z
     title: z.string().trim().min(1, "Add a headline.").max(200, "Keep the headline under 200 characters."),
     slug: z.string().trim().max(120).optional(),
     dek: z.string().trim().max(600, "Keep the standfirst under 600 characters.").default(""),
+    seoTitle: z.string().trim().max(70, "Keep the search title under 70 characters.").optional(),
     seoDescription: z.string().trim().max(200, "Keep the search description under 200 characters.").optional(),
     section: z.string().trim().min(1, "Choose a section."),
     format: z.enum(FORMATS, { error: "Choose a format." }),
@@ -213,6 +215,7 @@ async function prepare(input: ArticleInput, existing?: InstanceType<typeof Artic
     slug,
     title: input.title,
     dek: input.dek,
+    seoTitle: input.seoTitle || undefined,
     seoDescription: input.seoDescription || undefined,
     section: input.section,
     format: input.format,
@@ -243,6 +246,7 @@ articlesRouter.put("/:id", async (req, res) => {
   const data = await prepare(parse(articleInput, req.body), doc);
   doc.set({ ...data, updatedBy: req.user!.id });
   if (!data.revisedAt) doc.set("revisedAt", undefined);
+  if (!data.seoTitle) doc.set("seoTitle", undefined);
   if (!data.seoDescription) doc.set("seoDescription", undefined);
   await doc.save();
   res.json({ id: String(doc._id), slug: doc.slug, status: statusOf(doc) });

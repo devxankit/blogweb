@@ -66,6 +66,8 @@ export interface Article {
   title: string;
   /** Standfirst: one or two sentences under the headline. */
   dek: string;
+  /** Optional title for search results, for headlines that don't name the topic. */
+  seoTitle?: string;
   /** Optional shorter description for search results, 150–160 characters. */
   seoDescription?: string;
   section: SectionSlug;
