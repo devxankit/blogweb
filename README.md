@@ -49,8 +49,11 @@ region (`bom1`), next to the database:
 
 | Project | Root directory | Address |
 |---|---|---|
-| `cosmoslens` | `frontend` | https://cosmoslens.vercel.app |
+| `cosmoslens` | `frontend` | https://www.cosmoslens.com |
 | `cosmoslens-api` | `backend` | https://cosmoslens-api.vercel.app |
+
+`www.cosmoslens.com` is the main address; `cosmoslens.com` redirects to it. The
+site's `VITE_SITE_URL` and the API's `CORS_ORIGIN` are set to it.
 
 - **API:** runs as one Vercel function. `npm run build` (`backend/build.mjs`)
   bundles it into `dist/app.js`, which `backend/api/index.js` serves. Uploaded
@@ -60,12 +63,9 @@ region (`bom1`), next to the database:
     `BLOB_READ_WRITE_TOKEN`, which Vercel added when the Blob store was connected.
   - **Site:** `API_URL`, `INTERNAL_API_KEY` (the same value as the API's),
     `SESSION_SECRET`, `VITE_SITE_URL` and `SITE_NOINDEX`.
-- **Search engines:** `SITE_NOINDEX=1` keeps them out while the site lives on
-  `vercel.app`. When cosmoslens.com is connected:
-  1. Add the domain to the `cosmoslens` project.
-  2. Set `VITE_SITE_URL=https://cosmoslens.com` and `CORS_ORIGIN` on the API to match.
-  3. Remove `SITE_NOINDEX`.
-  4. Redeploy the site.
+- **Search engines:** `SITE_NOINDEX=1` on the `cosmoslens` project keeps them out
+  until the site is ready to be public. To open it, delete that variable and
+  redeploy the site.
 - **Deploying:** both projects are connected to `devxankit/blogweb` on GitHub.
   Every push to `main` builds and deploys both automatically. Pushes to any other
   branch get preview deployments. A build that fails never replaces the live
