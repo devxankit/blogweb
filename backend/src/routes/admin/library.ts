@@ -2,7 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import { z } from "zod";
 import { escapeRegex, HttpError, intParam, isId, notFound, parse } from "../../lib/http";
-import { deleteUploadFiles, processUpload } from "../../lib/media";
+import { deleteImageFiles, processUpload } from "../../lib/media";
 import { authorOut, invalidateAuthors, invalidateImages, invalidateSections, sectionOut, toImageRef } from "../../lib/serialize";
 import { slugify } from "../../lib/text";
 import { Article, Author, Image, Section } from "../../models";
@@ -200,7 +200,8 @@ imagesRouter.post("/", upload.single("file"), async (req, res) => {
     aspect: processed.aspect,
     widths: processed.widths,
     og: true,
-    storage: "upload",
+    storage: processed.storage,
+    baseUrl: processed.baseUrl,
     originalName: req.file.originalname,
     bytes: processed.bytes,
     createdBy: req.user!.id,
@@ -224,7 +225,7 @@ imagesRouter.delete("/:id", async (req, res) => {
   const n = await Article.countDocuments({ imageKeys: doc.key });
   if (n) throw new HttpError(409, `This image is used in ${n} ${n === 1 ? "story" : "stories"}. Replace it there first.`);
   await doc.deleteOne();
-  if (doc.storage === "upload") await deleteUploadFiles(doc.key, doc.widths);
+  await deleteImageFiles(doc);
   invalidateImages();
   res.json({ ok: true });
 });

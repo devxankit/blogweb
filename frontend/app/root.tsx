@@ -16,6 +16,11 @@ export async function loader() {
   return { sections };
 }
 
+// Test deployments (SITE_NOINDEX=1) ask search engines not to index any page.
+// Child routes without their own headers inherit this.
+export const headers: Route.HeadersFunction = () =>
+  process.env.SITE_NOINDEX === "1" ? { "X-Robots-Tag": "noindex, nofollow" } : new Headers();
+
 // Only the headline face is preloaded so it never competes with the LCP image
 // for long; the other faces swap in over metric-matched fallbacks without shift.
 export const links: Route.LinksFunction = () => [

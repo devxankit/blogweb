@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useFetcher } from "react-router";
 import { imageUrl } from "~/lib/images";
 import type { ImageRef } from "~/lib/types";
@@ -29,11 +29,49 @@ export function Thumb({ image, className = "nr-thumb", alt = "" }: { image: Imag
   );
 }
 
+/**
+ * The hosting platform accepts request bodies up to 4.5 MB, so larger photos
+ * are scaled down in the browser first. The server then makes the site's
+ * smaller copies from this one, so nothing visible is lost.
+ */
+const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+
+async function shrinkForUpload(file: File): Promise<File> {
+  if (file.size <= MAX_UPLOAD_BYTES) return file;
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    throw new Error("This image is over 4 MB and your browser cannot resize it. Save it as a JPEG under 4 MB and try again.");
+  }
+  const name = file.name.replace(/\.[^.]+$/, "");
+  for (const [maxWidth, quality] of [
+    [2400, 0.9],
+    [2000, 0.86],
+    [1600, 0.82],
+  ] as const) {
+    const scale = Math.min(1, maxWidth / bitmap.width);
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    // WebP keeps transparency; browsers that cannot encode it fall back to JPEG.
+    let blob = await new Promise<Blob | null>((done) => canvas.toBlob(done, "image/webp", quality));
+    if (!blob || blob.type !== "image/webp") blob = await new Promise<Blob | null>((done) => canvas.toBlob(done, "image/jpeg", quality));
+    if (blob && blob.size <= MAX_UPLOAD_BYTES) {
+      return new File([blob], `${name}.${blob.type === "image/webp" ? "webp" : "jpg"}`, { type: blob.type });
+    }
+  }
+  throw new Error("This image is too large to upload. Save it as a JPEG under 4 MB and try again.");
+}
+
 /** Upload form: file plus the credit and license every image must carry. */
 export function UploadForm({ onUploaded, compact = false }: { onUploaded?: (image: ImageRef) => void; compact?: boolean }) {
   const fetcher = useFetcher<UploadResult>();
   const formRef = useRef<HTMLFormElement>(null);
-  const busy = fetcher.state === "submitting";
+  const [preparing, setPreparing] = useState(false);
+  const [localError, setLocalError] = useState("");
+  const busy = preparing || fetcher.state === "submitting";
   const result = fetcher.data;
   const errors = result && !result.ok ? result.fields : {};
 
@@ -46,16 +84,47 @@ export function UploadForm({ onUploaded, compact = false }: { onUploaded?: (imag
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.state, result]);
 
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const file = form.get("file");
+    setLocalError("");
+    if (file instanceof File && file.size) {
+      setPreparing(true);
+      try {
+        const ready = await shrinkForUpload(file);
+        form.set("file", ready, ready.name);
+      } catch (err) {
+        setLocalError(err instanceof Error ? err.message : "Could not prepare this image.");
+        return;
+      } finally {
+        setPreparing(false);
+      }
+    }
+    fetcher.submit(form, { method: "post", action: "/admin/media", encType: "multipart/form-data" });
+  };
+
   return (
-    <fetcher.Form ref={formRef} method="post" action="/admin/media" encType="multipart/form-data" className={compact ? "nr-upload nr-upload--compact" : "nr-upload"}>
+    <fetcher.Form
+      ref={formRef}
+      method="post"
+      action="/admin/media"
+      encType="multipart/form-data"
+      onSubmit={onSubmit}
+      className={compact ? "nr-upload nr-upload--compact" : "nr-upload"}
+    >
       <input type="hidden" name="intent" value="upload" />
       <div className="nr-field">
         <label htmlFor="up-file" className="nr-field__label">
           Image file
         </label>
         <input id="up-file" name="file" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/tiff" required className="nr-file" />
-        <p className="nr-field__hint">JPEG, PNG, WebP, AVIF or TIFF, at least 1600 pixels wide for sharp covers. Up to 20 MB.</p>
+        <p className="nr-field__hint">
+          JPEG, PNG, WebP, AVIF or TIFF, at least 1600 pixels wide for sharp covers. Photos over 4 MB are scaled down in your
+          browser before uploading.
+        </p>
         {errors.file ? <p className="nr-field__error">{errors.file}</p> : null}
+        {localError ? <p className="nr-field__error">{localError}</p> : null}
       </div>
       <div className="nr-upload__meta">
         <div className="nr-field">
@@ -94,7 +163,7 @@ export function UploadForm({ onUploaded, compact = false }: { onUploaded?: (imag
         </p>
       ) : null}
       <button type="submit" className="button" disabled={busy}>
-        {busy ? "Uploading and resizing…" : "Upload image"}
+        {preparing ? "Preparing the image…" : busy ? "Uploading and resizing…" : "Upload image"}
       </button>
     </fetcher.Form>
   );

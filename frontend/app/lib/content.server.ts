@@ -39,7 +39,35 @@ const cache = new Map<string, Entry>();
 export function clearContentCache() {
   const recent = [...cache.keys()].slice(-40);
   cache.clear();
+  // This instance already knows about the change; don't clear again on the next version check.
+  seenVersion = null;
   for (const path of recent) void load(path).catch(() => undefined);
+}
+
+/*
+ * On Vercel the site runs as several instances, each with its own cache, and
+ * an admin change reaches only one of them. Every few seconds each instance
+ * asks the API for its content version and starts fresh when it moved. The
+ * check runs in the background, so no reader waits for it.
+ */
+const VERSION_CHECK_MS = 5000;
+let seenVersion: number | null = null;
+let versionCheckedAt = 0;
+let checkingVersion = false;
+
+function checkVersion() {
+  if (checkingVersion || Date.now() - versionCheckedAt < VERSION_CHECK_MS) return;
+  checkingVersion = true;
+  api<{ version: number }>("/version", { timeoutMs: 3000 })
+    .then(({ version }) => {
+      if (seenVersion !== null && version !== seenVersion) cache.clear();
+      seenVersion = version;
+    })
+    .catch(() => undefined)
+    .finally(() => {
+      checkingVersion = false;
+      versionCheckedAt = Date.now();
+    });
 }
 
 function load<T>(path: string) {
@@ -57,6 +85,7 @@ function load<T>(path: string) {
  * exists, so pages render without waiting on the database.
  */
 function cached<T>(path: string): Promise<T> {
+  checkVersion();
   const hit = cache.get(path);
   const age = hit ? Date.now() - hit.at : Infinity;
   if (hit && age < FRESH_MS) return hit.value as Promise<T>;

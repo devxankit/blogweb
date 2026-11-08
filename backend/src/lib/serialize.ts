@@ -79,6 +79,7 @@ export function toImageRef(d: {
   source?: string | null;
   og?: boolean | null;
   storage?: string | null;
+  baseUrl?: string | null;
 }): ImageRef {
   return {
     key: d.key,
@@ -88,7 +89,7 @@ export function toImageRef(d: {
     license: d.license,
     source: d.source ?? "",
     og: Boolean(d.og),
-    base: d.storage === "static" ? STATIC_BASE : `${config.mediaPublicUrl}/stories`,
+    base: d.baseUrl ? d.baseUrl : d.storage === "static" ? STATIC_BASE : `${config.mediaPublicUrl}/stories`,
   };
 }
 

@@ -1,6 +1,13 @@
 import { absoluteUrl } from "~/config/site";
 
 export function loader() {
+  // Test deployments (SITE_NOINDEX=1) keep crawlers out entirely.
+  if (process.env.SITE_NOINDEX === "1") {
+    return new Response("User-agent: *\nDisallow: /\n", {
+      headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" },
+    });
+  }
+
   const body = [
     "User-agent: *",
     "Allow: /",

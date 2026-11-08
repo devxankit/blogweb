@@ -52,8 +52,14 @@ const imageSchema = new Schema(
     source: { type: String, default: "", trim: true },
     /** True when a 1200×630 share image exists. */
     og: { type: Boolean, default: false },
-    /** "static": shipped with the frontend in public/images/stories. "upload": stored by this server. */
-    storage: { type: String, enum: ["static", "upload"], default: "upload" },
+    /**
+     * "static": shipped with the frontend in public/images/stories.
+     * "upload": files on this server's disk (local development).
+     * "blob": files in Vercel Blob (production).
+     */
+    storage: { type: String, enum: ["static", "upload", "blob"], default: "upload" },
+    /** URL prefix of the files, for "blob" storage. */
+    baseUrl: { type: String, default: "" },
     originalName: { type: String, default: "" },
     bytes: { type: Number, default: 0 },
     createdBy: { type: Schema.Types.ObjectId, ref: "User" },
@@ -177,6 +183,8 @@ const settingsSchema = new Schema(
     editorsPicks: { type: [{ type: Schema.Types.ObjectId, ref: "Article" }], default: [] },
     picksTitle: { type: String, default: "Long reads" },
     picksIntro: { type: String, default: "" },
+    /** Raised on every content change, so all server instances know to refresh their caches. */
+    contentVersion: { type: Number, default: 0 },
   },
   { timestamps: true },
 );

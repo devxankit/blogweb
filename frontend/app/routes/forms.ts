@@ -24,7 +24,9 @@ export async function action({ request, params }: Route.ActionArgs) {
     // Bots, prefetches and admin pages are not readers.
     const ua = request.headers.get("user-agent") ?? "";
     if (isbot(ua) || request.headers.get("purpose") === "prefetch") return new Response(null, { status: 204 });
-    void api(target, { method: "POST", body, clientIp: clientIpOf(request), timeoutMs: 3000 }).catch(() => undefined);
+    // Awaited: serverless functions can be frozen as soon as they respond.
+    // The browser sends this as a beacon, so nobody waits on it.
+    await api(target, { method: "POST", body, clientIp: clientIpOf(request), timeoutMs: 3000 }).catch(() => undefined);
     return new Response(null, { status: 204 });
   }
 
