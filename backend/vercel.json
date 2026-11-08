@@ -9,5 +9,5 @@
       "includeFiles": "dist/**"
     }
   },
-  "rewrites": [{ "source": "/((?!robots\.txt).*)", "destination": "/api" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
