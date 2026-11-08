@@ -1,6 +1,9 @@
 import type { MetaDescriptor } from "react-router";
 import { absoluteUrl, site } from "~/config/site";
 
+/** Tag pages with fewer stories are too thin to index or list in the sitemap. */
+export const MIN_TAG_STORIES = 4;
+
 interface SeoInput {
   /** Page title without the site name. Omit on the home page. */
   title?: string;
@@ -46,7 +49,7 @@ export function seo(input: SeoInput): MetaDescriptor[] {
     { property: "og:image:height", content: "630" },
     { property: "og:image:alt", content: imageAlt },
     { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:site", content: site.twitterHandle },
+    ...(site.twitterHandle ? [{ name: "twitter:site", content: site.twitterHandle }] : []),
     { name: "twitter:title", content: input.title ?? site.name },
     { name: "twitter:description", content: input.description },
     { name: "twitter:image", content: image },

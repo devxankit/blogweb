@@ -3,8 +3,9 @@ import { vercelPreset } from "@vercel/react-router/vite";
 
 export default {
   appDirectory: "app",
-  // Every page is rendered on the server per request from the API's data, so
-  // stories published in the admin panel appear at once. The content layer
+  // Pages are rendered on the server from the API's data. Stories published in
+  // the admin panel appear within about a minute: app/entry.server.tsx lets the
+  // CDN hold public pages that long, and the content layer
   // (app/lib/content.server.ts) caches API responses briefly to keep it fast.
   ssr: true,
   // On Vercel, build for Vercel Functions; locally, keep the plain Node server

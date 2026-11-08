@@ -1,7 +1,7 @@
 import { data, Link } from "react-router";
 import { StoryCard } from "~/components/story";
 import { getTag } from "~/lib/content.server";
-import { seo } from "~/lib/seo";
+import { MIN_TAG_STORIES, seo } from "~/lib/seo";
 import { collection } from "~/lib/structured-data";
 import type { Route } from "./+types/tag";
 
@@ -20,7 +20,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
     description,
     path: `/tags/${slug}`,
     // Thin tag pages stay out of the index until they collect enough stories.
-    noindex: articles.length < 2,
+    noindex: articles.length < MIN_TAG_STORIES,
     jsonLd: [collection(name, description, `/tags/${slug}`, articles)],
   });
 };

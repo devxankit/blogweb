@@ -1,6 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "regions": ["bom1"],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "cosmoslens.vercel.app" }],
+      "destination": "https://www.cosmoslens.com/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/images/stories/(.*)",

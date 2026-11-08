@@ -1,6 +1,7 @@
 import { absoluteUrl } from "~/config/site";
 import { getSitemapEntries, getTags } from "~/lib/content.server";
 import { ogImageUrl } from "~/lib/images";
+import { MIN_TAG_STORIES } from "~/lib/seo";
 
 const STATIC_PAGES = ["/", "/articles", "/authors", "/about", "/newsletter", "/contribute", "/editorial-standards", "/contact", "/privacy", "/terms", "/cookies"];
 
@@ -19,8 +20,8 @@ function url(path: string, lastmod?: string, image?: string) {
 
 export async function loader() {
   const entries = await getSitemapEntries();
-  // Tag pages with a single story are noindexed, so leave them out here too.
-  const indexableTags = new Set((await getTags()).filter((t) => t.count >= 2).map((t) => `/tags/${t.slug}`));
+  // Thin tag pages are noindexed, so leave them out here too.
+  const indexableTags = new Set((await getTags()).filter((t) => t.count >= MIN_TAG_STORIES).map((t) => `/tags/${t.slug}`));
 
   const body = [
     `<?xml version="1.0" encoding="UTF-8"?>`,

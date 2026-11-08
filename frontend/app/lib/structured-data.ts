@@ -3,6 +3,7 @@ import { ogImageUrl } from "./images";
 import type { Article, ArticleSummary, Author, Section } from "./types";
 
 const publisherId = `${site.url}/#publisher`;
+const publisherLogo = { "@type": "ImageObject", url: absoluteUrl("/icon-512.png"), width: 512, height: 512 };
 
 export function publisher() {
   return {
@@ -13,9 +14,10 @@ export function publisher() {
     url: site.url,
     description: site.description,
     foundingDate: String(site.foundingYear),
-    logo: { "@type": "ImageObject", url: absoluteUrl("/icon-512.png"), width: 512, height: 512 },
+    logo: publisherLogo,
     email: site.email.editors,
-    sameAs: Object.values(site.social),
+    // Only accounts the publication really owns belong here.
+    ...(Object.keys(site.social).length ? { sameAs: Object.values(site.social) } : {}),
     publishingPrinciples: absoluteUrl("/editorial-standards"),
     correctionsPolicy: absoluteUrl("/editorial-standards#corrections"),
     ethicsPolicy: absoluteUrl("/editorial-standards#independence"),
@@ -72,7 +74,8 @@ export function articleSchema(article: Article, summary: ArticleSummary, author:
     timeRequired: `PT${summary.readingMinutes}M`,
     isAccessibleForFree: true,
     author: authorEntity(author),
-    publisher: { "@id": publisherId },
+    // Spelled out because article pages don't include the full publisher entry.
+    publisher: { "@type": "NewsMediaOrganization", "@id": publisherId, name: site.name, url: site.url, logo: publisherLogo },
   };
 }
 
