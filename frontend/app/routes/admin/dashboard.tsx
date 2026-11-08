@@ -1,6 +1,8 @@
-import { Link, useNavigation, useOutletContext, useSearchParams } from "react-router";
+import { Suspense } from "react";
+import { Await, Link, useNavigation, useOutletContext, useSearchParams } from "react-router";
 import { ColumnChart, RankBars, TrendChart } from "~/components/admin/charts";
-import { AdminPage, Ago, Empty, formatCount, formatFull, Panel, SectionTag, StatusBadge, type StoryStatus } from "~/components/admin/ui";
+import { SearchSummary, type SearchReport } from "~/components/admin/search-console";
+import { AdminPage, Ago, Delta, Empty, formatCount, formatFull, Panel, SectionTag, StatusBadge, type StoryStatus } from "~/components/admin/ui";
 import { adminApi, type AdminUser } from "~/lib/admin.server";
 import type { Route } from "./+types/dashboard";
 
@@ -19,25 +21,16 @@ interface Stats {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const days = new URL(request.url).searchParams.get("days") ?? "30";
-  return adminApi<Stats>(request, `/stats?days=${encodeURIComponent(days)}`);
+  const days = encodeURIComponent(new URL(request.url).searchParams.get("days") ?? "30");
+  // Streams in afterwards, so a slow reply from Google never holds up the dashboard.
+  const search = adminApi<SearchReport>(request, `/search-console?days=${days}`).catch(() => null);
+  return { stats: await adminApi<Stats>(request, `/stats?days=${days}`), search };
 }
 
 const RANGES = [7, 30, 90];
 
-function Delta({ now, before, days }: { now: number; before: number; days: number }) {
-  if (!before) return <p className="nr-stat__note">No earlier period to compare yet</p>;
-  const change = ((now - before) / before) * 100;
-  const dir = change > 0.5 ? "up" : change < -0.5 ? "down" : "flat";
-  return (
-    <p className={`nr-stat__delta nr-stat__delta--${dir}`}>
-      <span aria-hidden="true">{dir === "up" ? "▲" : dir === "down" ? "▼" : "■"}</span> {dir === "flat" ? "No change" : `${Math.abs(change).toFixed(0)}%`}{" "}
-      <span>vs the previous {days} days</span>
-    </p>
-  );
-}
-
-export default function Dashboard({ loaderData: s }: Route.ComponentProps) {
+export default function Dashboard({ loaderData }: Route.ComponentProps) {
+  const { stats: s, search } = loaderData;
   const { user } = useOutletContext<{ user: AdminUser }>();
   const [params] = useSearchParams();
   const refreshing = useNavigation().state === "loading";
@@ -108,6 +101,12 @@ export default function Dashboard({ loaderData: s }: Route.ComponentProps) {
             emptyText="No visits recorded in this period yet. Views appear here as readers open pages."
           />
         </Panel>
+
+        <Suspense fallback={null}>
+          <Await resolve={search} errorElement={null}>
+            {(report) => <SearchSummary report={report} />}
+          </Await>
+        </Suspense>
 
         <div className="nr-grid-2">
           <Panel title="Most read stories" aside={<span className="nr-muted">Last {s.days} days</span>}>

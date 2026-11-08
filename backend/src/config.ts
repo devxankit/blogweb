@@ -15,5 +15,11 @@ export const config = {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),
+  /** Optional: connects the admin panel to Google Search Console. */
+  searchConsole: {
+    serviceAccount: process.env.GSC_SERVICE_ACCOUNT_JSON ?? "",
+    /** The property exactly as Search Console names it, with the trailing slash. */
+    siteUrl: process.env.GSC_SITE_URL ?? "https://www.cosmoslens.com/",
+  },
   isProduction: process.env.NODE_ENV === "production",
 };

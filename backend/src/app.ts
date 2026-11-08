@@ -12,6 +12,7 @@ import { articlesRouter } from "./routes/admin/articles";
 import { settingsRouter, statsRouter } from "./routes/admin/insights";
 import { authorsRouter, imagesRouter, sectionsRouter } from "./routes/admin/library";
 import { messagesRouter, subscribersRouter, usersRouter } from "./routes/admin/people";
+import { searchConsoleRouter } from "./routes/admin/search-console";
 import { authRouter } from "./routes/auth";
 import { publicRouter } from "./routes/public";
 
@@ -52,6 +53,7 @@ app.use("/api/auth", authRouter);
 const admin = Router();
 admin.use(requireAuth);
 admin.use("/stats", statsRouter);
+admin.use("/search-console", searchConsoleRouter);
 // Changes to these appear on the public site, so they raise the content version.
 admin.use("/articles", bumpsVersion, articlesRouter);
 admin.use("/authors", bumpsVersion, authorsRouter);

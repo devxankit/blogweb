@@ -119,6 +119,19 @@ export function Empty({ title, children }: { title: string; children?: ReactNode
   );
 }
 
+/** Change against the previous period, for stat tiles. */
+export function Delta({ now, before, days }: { now: number; before: number; days: number }) {
+  if (!before) return <p className="nr-stat__note">No earlier period to compare yet</p>;
+  const change = ((now - before) / before) * 100;
+  const dir = change > 0.5 ? "up" : change < -0.5 ? "down" : "flat";
+  return (
+    <p className={`nr-stat__delta nr-stat__delta--${dir}`}>
+      <span aria-hidden="true">{dir === "up" ? "▲" : dir === "down" ? "▼" : "■"}</span> {dir === "flat" ? "No change" : `${Math.abs(change).toFixed(0)}%`}{" "}
+      <span>vs the previous {days} days</span>
+    </p>
+  );
+}
+
 /* Status */
 
 export type StoryStatus = "draft" | "scheduled" | "published";

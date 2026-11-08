@@ -9,6 +9,7 @@ export default [
     route("logout", "routes/admin/logout.ts"),
     layout("routes/admin/layout.tsx", [
       index("routes/admin/dashboard.tsx"),
+      route("search-console", "routes/admin/search-console.tsx"),
       route("articles", "routes/admin/articles.tsx"),
       route("articles/new", "routes/admin/article-edit.tsx", { id: "admin-article-new" }),
       route("articles/:id", "routes/admin/article-edit.tsx", { id: "admin-article-edit" }),

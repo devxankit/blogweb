@@ -20,6 +20,7 @@ const NAV = [
     group: "Publishing",
     items: [
       { to: "/admin", label: "Dashboard", end: true },
+      { to: "/admin/search-console", label: "Google Search" },
       { to: "/admin/articles", label: "Stories" },
       { to: "/admin/media", label: "Media library" },
       { to: "/admin/home-page", label: "Home page" },

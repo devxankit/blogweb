@@ -608,6 +608,10 @@
   box-shadow: inset 0 0 0 1.5px var(--muted);
 }
 
+.nr-status--failed::before {
+  background: var(--danger);
+}
+
 .nr-section {
   font-size: var(--text-sm);
 }
@@ -682,6 +686,8 @@
 }
 
 .nr-table-wrap {
+  /* Also contains visually hidden labels, which would otherwise widen the page. */
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--rule);
   border-radius: 12px;
@@ -728,6 +734,22 @@
 
 .nr-table--compact tbody tr:hover {
   background: none;
+}
+
+/* Inside a bordered frame, so cells need side padding; numbers never wrap or touch. */
+.nr-table--report th,
+.nr-table--report td {
+  padding: var(--space-2) var(--space-3);
+}
+
+.nr-table--report .num {
+  white-space: nowrap;
+}
+
+/* Keeps the first column readable on phones; the table scrolls sideways instead. */
+.nr-table__label {
+  min-width: 11rem;
+  overflow-wrap: anywhere;
 }
 
 .nr-path {
@@ -889,8 +911,24 @@
   color: var(--paper);
 }
 
+.nr-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+}
+
+.nr-steps {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+  padding-left: 1.25rem;
+}
+
 .nr-dash {
   display: grid;
+  /* Wide tables scroll inside their own frame instead of widening the page. */
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: var(--space-5);
   transition: opacity 160ms;
 }
@@ -1022,6 +1060,11 @@
   font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  /* A halo keeps the number readable where the line passes behind it. */
+  paint-order: stroke;
+  stroke: var(--paper-raised);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .nr-chart__cross line {

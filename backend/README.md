@@ -27,6 +27,8 @@ images, authors and sections in memory (see Caching).
 | `MEDIA_PUBLIC_URL` | Public address of this server's `/media` folder, where uploads are served |
 | `CORS_ORIGIN` | Comma-separated origins allowed to call the API from a browser |
 | `SEED_ADMIN_*`, `SEED_EDITOR_*` | Name, email and password of the accounts `npm run seed` creates |
+| `GSC_SERVICE_ACCOUNT_JSON` | Optional. The whole JSON key of a Google service account that is a user of the Search Console property. Powers the admin panel's Google Search page |
+| `GSC_SITE_URL` | Optional. The Search Console property, with its trailing slash. Defaults to `https://www.cosmoslens.com/` |
 | `PORT` | Defaults to 4000 |
 
 Generate secrets with

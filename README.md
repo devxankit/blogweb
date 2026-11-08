@@ -61,6 +61,8 @@ site's `VITE_SITE_URL` and the API's `CORS_ORIGIN` are set to it.
 - **Settings:** set in each project's Environment Variables, not in files.
   - **API:** `MONGODB_URI`, `JWT_SECRET`, `INTERNAL_API_KEY`, `CORS_ORIGIN` and
     `BLOB_READ_WRITE_TOKEN`, which Vercel added when the Blob store was connected.
+    `GSC_SERVICE_ACCOUNT_JSON` is optional and connects the admin panel to Google
+    Search Console; the Google Search page in the admin panel lists the steps.
   - **Site:** `API_URL`, `INTERNAL_API_KEY` (the same value as the API's),
     `SESSION_SECRET`, `VITE_SITE_URL` and `SITE_NOINDEX`.
 - **Search engines:** production is open to them. `SITE_NOINDEX=1` is set only on
