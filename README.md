@@ -38,15 +38,38 @@ calls the API from the site's server too, so the sign-in token never reaches the
 browser.
 
 ```
-browser ──> frontend server (5173 / 3000) ──> API (4000) ──> MongoDB Atlas
-                                                      └──> uploads/ (images)
+browser ──> site (Vercel: cosmoslens) ──> API (Vercel: cosmoslens-api) ──> MongoDB Atlas (Mumbai)
+                                                          └──> Vercel Blob (uploaded images)
 ```
 
-## Production
+## Production (Vercel)
 
-1. API: set `NODE_ENV=production`, a real `MEDIA_PUBLIC_URL` and `CORS_ORIGIN`,
-   then `npm start` in `backend/`.
-2. Site: set `API_URL`, `INTERNAL_API_KEY` (same as the API), `SESSION_SECRET`
-   and `VITE_SITE_URL` in `frontend/.env`, then `npm run build` and `npm start`.
-3. Put both behind HTTPS (for example nginx or Caddy) and pass the client IP in
-   `X-Forwarded-For`.
+Two Vercel projects in the `ram312908-gmailcoms-projects` team, both in the Mumbai
+region (`bom1`), next to the database:
+
+| Project | Root directory | Address |
+|---|---|---|
+| `cosmoslens` | `frontend` | https://cosmoslens.vercel.app |
+| `cosmoslens-api` | `backend` | https://cosmoslens-api.vercel.app |
+
+- **API:** runs as one Vercel function. `npm run build` (`backend/build.mjs`)
+  bundles it into `dist/app.js`, which `backend/api/index.js` serves. Uploaded
+  images go to the Vercel Blob store `cosmoslens-media`.
+- **Settings:** set in each project's Environment Variables, not in files.
+  - **API:** `MONGODB_URI`, `JWT_SECRET`, `INTERNAL_API_KEY`, `CORS_ORIGIN` and
+    `BLOB_READ_WRITE_TOKEN`, which Vercel added when the Blob store was connected.
+  - **Site:** `API_URL`, `INTERNAL_API_KEY` (the same value as the API's),
+    `SESSION_SECRET`, `VITE_SITE_URL` and `SITE_NOINDEX`.
+- **Search engines:** `SITE_NOINDEX=1` keeps them out while the site lives on
+  `vercel.app`. When cosmoslens.com is connected:
+  1. Add the domain to the `cosmoslens` project.
+  2. Set `VITE_SITE_URL=https://cosmoslens.com` and `CORS_ORIGIN` on the API to match.
+  3. Remove `SITE_NOINDEX`.
+  4. Redeploy the site.
+- **Deploying:** the projects are not connected to GitHub yet; until they are,
+  deploy from the repository root with the Vercel CLI. To deploy on every push
+  instead, connect GitHub under Account Settings → Authentication on vercel.com,
+  then connect `devxankit/blogweb` under each project's Settings → Git. The root
+  directories are already set.
+- **One database:** local development uses the same MongoDB database as the live
+  site, so anything you publish or delete locally changes the live site too.

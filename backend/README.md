@@ -102,11 +102,15 @@ Errors look like `{ "error": "Message", "fields": { "title": "Add a headline." }
 
 ## Images
 
-Uploads (JPEG, PNG, WebP, AVIF or TIFF, up to 20 MB) are converted with sharp to
-AVIF and WebP at 480, 800, 1200 and 1600 pixels wide, plus a 1200×630 JPEG for
-social sharing. They are written to `uploads/stories` and served from `/media`
-with a one-year cache. Back this folder up along with the database. To use a CDN,
-point `MEDIA_PUBLIC_URL` at it.
+Uploads (JPEG, PNG, WebP, AVIF or TIFF) are converted with sharp to AVIF and WebP
+at 480, 800, 1200 and 1600 pixels wide, plus a 1200×630 JPEG for social sharing.
+
+- **On Vercel** (`BLOB_READ_WRITE_TOKEN` set): the files go to the Vercel Blob
+  store and are served from its CDN with a one-year cache. Vercel limits request
+  bodies to 4.5 MB, so the admin panel scales larger photos down in the browser
+  before uploading.
+- **Locally:** they are written to `uploads/stories` and served from `/media`
+  (`MEDIA_PUBLIC_URL`).
 
 ## Statistics
 
