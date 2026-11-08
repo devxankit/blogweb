@@ -9,7 +9,7 @@ export const cosmos: Article[] = [
       "The Hubble tension explained: why measurements of the universe’s expansion rate disagree, what the James Webb Space Telescope found, and what could resolve it.",
     section: "cosmos",
     format: "Analysis",
-    author: "mara-okonkwo",
+    author: "cosmoslens-editors",
     publishedAt: "2026-10-14T08:00:00Z",
     cover: {
       image: "hubble-tension",
@@ -59,7 +59,7 @@ export const cosmos: Article[] = [
       "What the cosmic microwave background is, how it was discovered, and how its tiny temperature ripples reveal the age and makeup of the universe.",
     section: "cosmos",
     format: "Explainer",
-    author: "mara-okonkwo",
+    author: "cosmoslens-editors",
     publishedAt: "2026-09-03T08:00:00Z",
     cover: {
       image: "cmb",
@@ -102,7 +102,7 @@ export const cosmos: Article[] = [
       "DESI’s map of millions of galaxies hints that dark energy may be changing over time. What the data show, how strong the evidence is, and what comes next.",
     section: "cosmos",
     format: "Analysis",
-    author: "mara-okonkwo",
+    author: "cosmoslens-editors",
     publishedAt: "2026-08-12T08:00:00Z",
     cover: {
       image: "kitt-peak",

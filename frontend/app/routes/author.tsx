@@ -49,7 +49,8 @@ export default function AuthorPage({ loaderData }: Route.ComponentProps) {
           />
           <h1 className="author-head__name">{author.name}</h1>
           <p className="author-head__role">
-            {author.role}, based in {author.location}
+            {author.role}
+            {author.location ? `, based in ${author.location}` : ""}
           </p>
           <div className="author-head__bio">
             {author.bio.map((p) => (

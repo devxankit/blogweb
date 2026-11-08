@@ -9,7 +9,7 @@ export const ideas: Article[] = [
       "How Henrietta Swan Leavitt discovered the Cepheid period-luminosity relation that made it possible to measure cosmic distances, and why her credit came so late.",
     section: "ideas",
     format: "Profile",
-    author: "ruth-aldana",
+    author: "cosmoslens-editors",
     publishedAt: "2026-10-01T08:00:00Z",
     cover: {
       image: "harvard-computers",
@@ -58,7 +58,7 @@ export const ideas: Article[] = [
       "Citizen science shows the night sky brightening by nearly 10 percent a year. The costs of light pollution and satellite streaks, and what can be done.",
     section: "ideas",
     format: "Essay",
-    author: "mara-okonkwo",
+    author: "cosmoslens-editors",
     publishedAt: "2026-07-22T08:00:00Z",
     cover: {
       image: "black-marble",

@@ -71,14 +71,17 @@ export function articleSchema(article: Article, summary: ArticleSummary, author:
     wordCount: summary.wordCount,
     timeRequired: `PT${summary.readingMinutes}M`,
     isAccessibleForFree: true,
-    author: {
-      "@type": "Person",
-      name: author.name,
-      url: absoluteUrl(`/authors/${author.slug}`),
-      jobTitle: author.role,
-    },
+    author: authorEntity(author),
     publisher: { "@id": publisherId },
   };
+}
+
+/** The shared editorial byline is an organization; everyone else is a person. */
+function authorEntity(author: Author) {
+  const base = { name: author.name, url: absoluteUrl(`/authors/${author.slug}`) };
+  return author.slug === site.houseAuthor
+    ? { "@type": "Organization", ...base }
+    : { "@type": "Person", ...base, jobTitle: author.role };
 }
 
 export function authorProfile(author: Author) {
@@ -86,13 +89,10 @@ export function authorProfile(author: Author) {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     mainEntity: {
-      "@type": "Person",
-      name: author.name,
-      url: absoluteUrl(`/authors/${author.slug}`),
-      jobTitle: author.role,
+      ...authorEntity(author),
       description: author.shortBio,
       knowsAbout: author.expertise,
-      worksFor: { "@id": publisherId },
+      ...(author.slug === site.houseAuthor ? {} : { worksFor: { "@id": publisherId } }),
     },
   };
 }

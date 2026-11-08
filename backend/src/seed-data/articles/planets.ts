@@ -9,7 +9,7 @@ export const planets: Article[] = [
       "What we know about the ocean beneath Europa’s ice shell, and what NASA’s Europa Clipper will measure when it reaches Jupiter in 2030.",
     section: "planets",
     format: "Feature",
-    author: "tobias-lindqvist",
+    author: "cosmoslens-editors",
     publishedAt: "2026-09-24T08:00:00Z",
     cover: {
       image: "europa",
@@ -49,7 +49,7 @@ export const planets: Article[] = [
       "How transmission spectroscopy reveals exoplanet atmospheres, and why claims of a biosignature on K2-18b remain unconfirmed.",
     section: "planets",
     format: "Analysis",
-    author: "tobias-lindqvist",
+    author: "cosmoslens-editors",
     publishedAt: "2026-08-27T08:00:00Z",
     cover: {
       image: "hycean",
@@ -88,7 +88,7 @@ export const planets: Article[] = [
       "Why Venus became a runaway greenhouse world, whether it once had oceans, and the missions planned to find out.",
     section: "planets",
     format: "Explainer",
-    author: "tobias-lindqvist",
+    author: "cosmoslens-editors",
     publishedAt: "2026-07-16T08:00:00Z",
     cover: {
       image: "venus",

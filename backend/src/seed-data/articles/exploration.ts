@@ -9,7 +9,7 @@ export const exploration: Article[] = [
       "Voyager 1 is about to become the first spacecraft one light-day from Earth. Inside the engineering that keeps a 1977 probe alive in interstellar space.",
     section: "exploration",
     format: "Feature",
-    author: "daniel-achterberg",
+    author: "cosmoslens-editors",
     publishedAt: "2026-10-21T08:00:00Z",
     updatedAt: "2026-10-22T10:30:00Z",
     cover: {
@@ -74,7 +74,7 @@ export const exploration: Article[] = [
       "Why planetary scientists made a Uranus orbiter and probe their top flagship priority, and why the launch window matters.",
     section: "exploration",
     format: "Analysis",
-    author: "daniel-achterberg",
+    author: "cosmoslens-editors",
     publishedAt: "2026-09-10T08:00:00Z",
     cover: {
       image: "uranus",
@@ -119,7 +119,7 @@ export const exploration: Article[] = [
       "From Apollo 8’s Earthrise to the Pale Blue Dot and daily images from deep space: an essay on why photographs of Earth still matter.",
     section: "exploration",
     format: "Essay",
-    author: "ruth-aldana",
+    author: "cosmoslens-editors",
     publishedAt: "2026-07-30T08:00:00Z",
     cover: {
       image: "earthrise",

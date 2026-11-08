@@ -9,7 +9,7 @@ export const physics: Article[] = [
       "How optical atomic clocks work, why they can detect gravity’s effect on time across a millimeter, and why the definition of the second is being rewritten.",
     section: "physics",
     format: "Feature",
-    author: "ines-valcourt",
+    author: "cosmoslens-editors",
     publishedAt: "2026-10-07T08:00:00Z",
     cover: {
       image: "strontium-clock",
@@ -53,7 +53,7 @@ export const physics: Article[] = [
       "Fermilab’s final muon g-2 result agrees with the latest Standard Model prediction. How the anomaly faded, and the open puzzle it left behind.",
     section: "physics",
     format: "Analysis",
-    author: "ines-valcourt",
+    author: "cosmoslens-editors",
     publishedAt: "2026-08-19T08:00:00Z",
     cover: {
       image: "muon-ring",
@@ -95,7 +95,7 @@ export const physics: Article[] = [
       "The history of the bubble chamber, the detector that photographed particle tracks, discovered dozens of new particles and relied on teams of human scanners.",
     section: "physics",
     format: "Feature",
-    author: "ines-valcourt",
+    author: "cosmoslens-editors",
     publishedAt: "2026-07-09T08:00:00Z",
     cover: {
       image: "bubble-chamber",

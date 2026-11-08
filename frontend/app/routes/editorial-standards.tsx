@@ -7,7 +7,7 @@ import type { Route } from "./+types/editorial-standards";
 export const meta: Route.MetaFunction = () =>
   seo({
     title: "Editorial standards",
-    description: "How CosmosLens reports, sources, fact-checks and corrects its journalism, and how we keep advertising separate.",
+    description: "How CosmosLens sources, checks and corrects its stories, how AI tools are used, and how we keep advertising separate.",
     path: "/editorial-standards",
   });
 
@@ -16,7 +16,7 @@ export default function EditorialStandards() {
     <DocPage
       title="Editorial standards"
       lede="What you can expect from every story we publish, and what to do if we fall short."
-      updated="2026-10-01"
+      updated="2026-11-08"
       sections={[
         {
           id: "accuracy",
@@ -24,26 +24,31 @@ export default function EditorialStandards() {
           body: (
             <>
               <p>
-                We report from primary sources wherever they exist: peer-reviewed papers, preprints, datasets, mission documents and
-                interviews. When we cite research, we link to it. When a finding has not yet been peer reviewed, we say so.
+                We work from primary sources wherever they exist: peer-reviewed papers, preprints, datasets and mission documents.
+                When a finding has not yet been peer reviewed, we say so.
               </p>
               <p>
-                We distinguish between what a study shows, what its authors suggest, and what other experts think. We do not
-                describe a single result as settled science, and we seek out independent researchers to comment on significant
-                claims.
+                We distinguish between what a study shows, what its authors suggest, and what other experts have published about it.
+                We do not describe a single result as settled science.
               </p>
             </>
           ),
         },
         {
           id: "review",
-          title: "Editing and fact-checking",
+          title: "How stories are made",
           body: (
-            <p>
-              Every story is edited before publication. Features and analysis are fact-checked against their sources, and numbers,
-              names, dates and quotations are verified. Quotations are not altered in meaning, and we do not offer sources approval of
-              our copy, though we may check technical passages with them for accuracy.
-            </p>
+            <>
+              <p>
+                Stories are prepared in-house and published under the shared byline of the {site.name} editors. Work by outside
+                writers and researchers is credited to them by name.
+              </p>
+              <p>
+                We use AI tools to help with research and drafting. They do not decide what we publish: every story is checked against
+                its sources before publication, including numbers, names and dates. Quotations come from published sources and are not
+                altered in meaning.
+              </p>
+            </>
           ),
         },
         {

@@ -11,7 +11,7 @@ export async function loader() {
 export const meta: Route.MetaFunction = () =>
   seo({
     title: "Contributors",
-    description: "The editors, correspondents and writers who report and write for CosmosLens.",
+    description: "Who writes for CosmosLens: the editorial team and the contributors credited on our stories.",
     path: "/authors",
   });
 
@@ -21,8 +21,8 @@ export default function Authors({ loaderData }: Route.ComponentProps) {
       <header className="page-head">
         <h1 className="page-head__title">Contributors</h1>
         <p className="page-head__lede">
-          CosmosLens is written by reporters and editors with backgrounds in research, and by scientists who write. Every story
-          carries the name of the person responsible for it.
+          Stories on CosmosLens are published under the shared byline of our editorial team. Writers and researchers who contribute
+          are credited by name.
         </p>
       </header>
       <ul className="people">

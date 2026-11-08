@@ -5,8 +5,10 @@ export const site = {
   // Shown in the masthead, footer and the default meta description.
   tagline: "Long-form journalism on space and science",
   description:
-    "CosmosLens publishes reported features, essays and analysis on cosmology, planetary science, exploration, physics and life, written for readers who want the whole story.",
+    "CosmosLens publishes features, essays and analysis on cosmology, planetary science, exploration, physics and life, written for readers who want the whole story.",
   url: (env.VITE_SITE_URL || "https://www.cosmoslens.com").replace(/\/$/, ""),
+  /** Slug of the shared byline. It is the publication's team, so schema.org marks it as an Organization, not a Person. */
+  houseAuthor: "cosmoslens-editors",
   language: "en-US",
   locale: "en_US",
   // These mailboxes don't exist yet. Create them (or forwarders) for cosmoslens.com before launch.

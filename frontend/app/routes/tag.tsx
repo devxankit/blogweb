@@ -14,7 +14,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 export const meta: Route.MetaFunction = ({ loaderData }) => {
   if (!loaderData) return [];
   const { name, slug, articles } = loaderData;
-  const description = `Stories about ${name} from CosmosLens: reported features, essays and analysis.`;
+  const description = `Stories about ${name} from CosmosLens: features, essays and analysis.`;
   return seo({
     title: name,
     description,

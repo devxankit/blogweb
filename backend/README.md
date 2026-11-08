@@ -40,7 +40,7 @@ all stories, authors, sections and the launch image records.
 
 It loads, from `src/seed-data/`:
 
-- the six sections, six authors and 16 stories written for launch;
+- the six sections, the shared "CosmosLens Editors" byline and 16 stories written for launch;
 - records for the 27 launch images, whose files ship with the frontend in
   `frontend/public/images/stories`;
 - the home page settings (long-reads band);

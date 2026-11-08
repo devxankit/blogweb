@@ -9,7 +9,7 @@ export const life: Article[] = [
       "Perseverance found ‘leopard spots’ in a Martian rock that could be a sign of ancient life. What the evidence shows and why the samples need to come to Earth.",
     section: "life",
     format: "Analysis",
-    author: "sofia-mendel",
+    author: "cosmoslens-editors",
     publishedAt: "2026-09-17T08:00:00Z",
     cover: {
       image: "cheyava-falls",
@@ -49,7 +49,7 @@ export const life: Article[] = [
       "How tardigrades survive extreme conditions, what happened when they were exposed to space, and what their proteins could mean for medicine.",
     section: "life",
     format: "Explainer",
-    author: "sofia-mendel",
+    author: "cosmoslens-editors",
     publishedAt: "2026-08-05T08:00:00Z",
     cover: {
       image: "tardigrade",

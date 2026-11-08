@@ -27,7 +27,7 @@ export default function About({ loaderData }: Route.ComponentProps) {
   return (
     <DocPage
       title="Looking hard at what seems empty"
-      lede={`${site.name} publishes reported features, essays and analysis on space and science for readers who want the whole story, and the evidence behind it.`}
+      lede={`${site.name} publishes features, essays and analysis on space and science for readers who want the whole story, and the evidence behind it.`}
       before={
         <figure className="about-hero">
           <div className="about-hero__media">
@@ -94,14 +94,13 @@ export default function About({ loaderData }: Route.ComponentProps) {
           body: (
             <>
               <p>
-                Our stories are built on primary sources: the published research, the data, and interviews with the people who did
-                the work and with independent experts who did not. We explain uncertainty rather than hiding it, and we say plainly
-                when a result is preliminary, disputed or unreplicated.
+                Our stories are built on primary sources: published research, mission data and agency records. We explain uncertainty
+                rather than hiding it, and we say plainly when a result is preliminary, disputed or unreplicated.
               </p>
               <p>
-                Every story carries the name of the writer responsible for it and is edited before publication. When we get
-                something wrong, we correct it openly. Our full <Link to="/editorial-standards">editorial standards</Link> describe
-                how.
+                Stories are prepared in-house and published under the shared byline of the {site.name} editors. AI tools assist with
+                research and drafting, and every story is checked against its sources before it is published. When we get something
+                wrong, we correct it openly. Our full <Link to="/editorial-standards">editorial standards</Link> describe how.
               </p>
             </>
           ),

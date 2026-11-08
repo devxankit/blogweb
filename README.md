@@ -63,9 +63,8 @@ site's `VITE_SITE_URL` and the API's `CORS_ORIGIN` are set to it.
     `BLOB_READ_WRITE_TOKEN`, which Vercel added when the Blob store was connected.
   - **Site:** `API_URL`, `INTERNAL_API_KEY` (the same value as the API's),
     `SESSION_SECRET`, `VITE_SITE_URL` and `SITE_NOINDEX`.
-- **Search engines:** `SITE_NOINDEX=1` on the `cosmoslens` project keeps them out
-  until the site is ready to be public. To open it, delete that variable and
-  redeploy the site.
+- **Search engines:** production is open to them. `SITE_NOINDEX=1` is set only on
+  Preview deployments, so test builds stay out of search results.
 - **Deploying:** both projects are connected to `devxankit/blogweb` on GitHub.
   Every push to `main` builds and deploys both automatically. Pushes to any other
   branch get preview deployments. A build that fails never replaces the live
