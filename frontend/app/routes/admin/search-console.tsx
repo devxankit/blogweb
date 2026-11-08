@@ -251,7 +251,7 @@ function Setup() {
           Under <strong>IAM &amp; Admin, Service Accounts</strong>, create a service account. Open it, then choose <strong>Keys, Add key, JSON</strong> to download its key file.
         </li>
         <li>
-          In <a href={CONSOLE_URL} target="_blank" rel="noopener">Search Console</a>, open <strong>Settings, Users and permissions</strong> and add the service account's email address with <strong>Restricted</strong> permission.
+          In <a href={CONSOLE_URL} target="_blank" rel="noopener">Search Console</a>, open <strong>Settings, Users and permissions</strong> and add the service account's email address with <strong>Full</strong> permission. The connection itself can only read.
         </li>
         <li>
           In Vercel, open the <strong>cosmoslens-api</strong> project and add an environment variable named <code>GSC_SERVICE_ACCOUNT_JSON</code>. Paste the whole key file as its value, then redeploy.
