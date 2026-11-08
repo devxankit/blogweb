@@ -1,0 +1,12 @@
+# What the Vercel CLI should not upload when deploying from the repository root.
+**/node_modules
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+backend/uploads
+backend/dist
+frontend/build
+frontend/.react-router
+.claude
+docs
