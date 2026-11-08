@@ -143,7 +143,7 @@ interface SitemapEntry {
   isPending?: boolean;
   errors?: string | number;
   warnings?: string | number;
-  contents?: { submitted?: string | number }[];
+  contents?: { type?: string; submitted?: string | number }[];
 }
 
 export async function searchReport(days: number, type: SearchType) {
@@ -211,7 +211,8 @@ export async function searchReport(days: number, type: SearchType) {
         pending: Boolean(s.isPending),
         errors: Number(s.errors ?? 0),
         warnings: Number(s.warnings ?? 0),
-        submitted: (s.contents ?? []).reduce((sum, c) => sum + Number(c.submitted ?? 0), 0),
+        // Web pages only: "image" entries count the pictures listed on those pages.
+        submitted: (s.contents ?? []).filter((c) => c.type === "web").reduce((sum, c) => sum + Number(c.submitted ?? 0), 0),
       })),
     };
   });
@@ -246,7 +247,8 @@ export async function indexStatus(loadPages: () => Promise<{ path: string; title
   const site = config.searchConsole.siteUrl;
 
   return cached("index", INDEX_TTL, async () => {
-    const pages = await mapLimit(await loadPages(), 8, async (page) => {
+    // Each answer takes several seconds, and the quota allows 600 calls a minute.
+    const pages = await mapLimit(await loadPages(), 20, async (page) => {
       try {
         const { inspectionResult: result } = await call<Inspection>(account, INSPECT_URL, {
           inspectionUrl: new URL(page.path, site).href,

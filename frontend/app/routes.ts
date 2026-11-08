@@ -10,6 +10,7 @@ export default [
     layout("routes/admin/layout.tsx", [
       index("routes/admin/dashboard.tsx"),
       route("search-console", "routes/admin/search-console.tsx"),
+      route("search-console/index-status", "routes/admin/search-console-index.ts"),
       route("articles", "routes/admin/articles.tsx"),
       route("articles/new", "routes/admin/article-edit.tsx", { id: "admin-article-new" }),
       route("articles/:id", "routes/admin/article-edit.tsx", { id: "admin-article-edit" }),

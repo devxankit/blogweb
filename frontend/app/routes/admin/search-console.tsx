@@ -1,5 +1,5 @@
-import { Suspense, type ReactNode } from "react";
-import { Await, Link, useNavigation } from "react-router";
+import { useEffect, type ReactNode } from "react";
+import { Link, useFetcher, useNavigation } from "react-router";
 import { TrendChart } from "~/components/admin/charts";
 import { formatCtr, formatPosition, SearchTiles, type IndexReport, type SearchData, type SearchReport, type SearchRow } from "~/components/admin/search-console";
 import { AdminPage, Empty, formatDay, formatFull, Panel } from "~/components/admin/ui";
@@ -8,14 +8,16 @@ import type { Route } from "./+types/search-console";
 
 const CONSOLE_URL = "https://search.google.com/search-console?resource_id=https%3A%2F%2Fwww.cosmoslens.com%2F";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs): Promise<SearchReport> {
   const params = new URL(request.url).searchParams;
   const days = encodeURIComponent(params.get("days") ?? "30");
   const type = encodeURIComponent(params.get("type") ?? "web");
-  const report = await adminApi<SearchReport>(request, `/search-console?days=${days}&type=${type}`);
-  // Checking every page takes a few seconds, so it streams in after the report.
-  const index = report.status === "ok" ? adminApi<IndexReport>(request, "/search-console/index-status").catch(() => null) : null;
-  return { report, index };
+  try {
+    return await adminApi<SearchReport>(request, `/search-console?days=${days}&type=${type}`, { timeoutMs: 30_000 });
+  } catch (err) {
+    if (err instanceof Response) throw err; // Expired session: on to the login page.
+    return { status: "error", message: "Search Console data could not be loaded just now. Reload this page to try again." };
+  }
 }
 
 const RANGES = [7, 30, 90];
@@ -144,11 +146,27 @@ const VERDICTS: Record<string, { status: string; label: string }> = {
 };
 const NOT_YET = { status: "scheduled", label: "Not on Google yet" };
 
-function IndexPanel({ result }: { result: IndexReport | null }) {
-  if (!result || result.status !== "ok") {
+/** Asking Google about every page can take half a minute, so it loads after the page has rendered. */
+function IndexSection() {
+  const fetcher = useFetcher<IndexReport>();
+  useEffect(() => {
+    if (fetcher.state === "idle" && !fetcher.data) fetcher.load("/admin/search-console/index-status");
+    // Runs once, when the page opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (fetcher.data) return <IndexPanel result={fetcher.data} />;
+  return (
+    <Panel title="Pages on Google">
+      <p className="nr-muted">Asking Google about each page. This can take up to half a minute.</p>
+    </Panel>
+  );
+}
+
+function IndexPanel({ result }: { result: IndexReport }) {
+  if (result.status !== "ok") {
     return (
       <Panel title="Pages on Google">
-        <p className="nr-muted">{result?.status === "error" ? result.message : "Google could not be reached. Reload to try again."}</p>
+        <p className="nr-muted">{result.status === "error" ? result.message : "Connect Search Console to see this."}</p>
       </Panel>
     );
   }
@@ -263,7 +281,7 @@ function Setup() {
 }
 
 export default function SearchConsole({ loaderData }: Route.ComponentProps) {
-  const { report, index } = loaderData;
+  const report = loaderData;
   const refreshing = useNavigation().state === "loading";
   const ok = report.status === "ok";
 
@@ -311,9 +329,7 @@ export default function SearchConsole({ loaderData }: Route.ComponentProps) {
           <div className={refreshing ? "nr-dash is-refreshing" : "nr-dash"}>
             <SearchTiles data={report} />
             <Performance data={report} />
-            <Suspense fallback={<Panel title="Pages on Google"><p className="nr-muted">Asking Google about each page…</p></Panel>}>
-              <Await resolve={index}>{(result) => <IndexPanel result={result} />}</Await>
-            </Suspense>
+            <IndexSection />
             <SitemapsPanel data={report} />
             <p className="nr-muted">
               Google doesn't share its Page indexing summary, Core Web Vitals, Links, Enhancements, Manual actions or Security reports through its API.{" "}
