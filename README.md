@@ -66,10 +66,9 @@ region (`bom1`), next to the database:
   2. Set `VITE_SITE_URL=https://cosmoslens.com` and `CORS_ORIGIN` on the API to match.
   3. Remove `SITE_NOINDEX`.
   4. Redeploy the site.
-- **Deploying:** the projects are not connected to GitHub yet; until they are,
-  deploy from the repository root with the Vercel CLI. To deploy on every push
-  instead, connect GitHub under Account Settings → Authentication on vercel.com,
-  then connect `devxankit/blogweb` under each project's Settings → Git. The root
-  directories are already set.
+- **Deploying:** both projects are connected to `devxankit/blogweb` on GitHub.
+  Every push to `main` builds and deploys both automatically. Pushes to any other
+  branch get preview deployments. A build that fails never replaces the live
+  site, so the previous version keeps running.
 - **One database:** local development uses the same MongoDB database as the live
   site, so anything you publish or delete locally changes the live site too.
