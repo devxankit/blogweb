@@ -45,7 +45,7 @@ subscribersRouter.get("/export.csv", async (req, res) => {
 subscribersRouter.put("/:id", async (req, res) => {
   if (!isId(req.params.id)) throw notFound();
   const { status } = parse(z.object({ status: z.enum(["active", "unsubscribed"]) }), req.body);
-  const doc = await Subscriber.findByIdAndUpdate(req.params.id, { status }, { new: true });
+  const doc = await Subscriber.findByIdAndUpdate(req.params.id, { status }, { returnDocument: "after" });
   if (!doc) throw notFound();
   res.json({ ok: true });
 });
@@ -91,7 +91,7 @@ messagesRouter.get("/", async (req, res) => {
 messagesRouter.put("/:id", async (req, res) => {
   if (!isId(req.params.id)) throw notFound();
   const { read } = parse(z.object({ read: z.boolean() }), req.body);
-  const doc = await Message.findByIdAndUpdate(req.params.id, { read }, { new: true });
+  const doc = await Message.findByIdAndUpdate(req.params.id, { read }, { returnDocument: "after" });
   if (!doc) throw notFound();
   res.json({ ok: true });
 });

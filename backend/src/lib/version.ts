@@ -37,7 +37,7 @@ export function currentVersion(): Promise<number> {
 }
 
 async function bumpVersion() {
-  const s = await Settings.findOneAndUpdate({ key: "site" }, { $inc: { contentVersion: 1 } }, { new: true, upsert: true })
+  const s = await Settings.findOneAndUpdate({ key: "site" }, { $inc: { contentVersion: 1 } }, { returnDocument: "after", upsert: true })
     .select("contentVersion")
     .lean();
   known = s?.contentVersion ?? null;

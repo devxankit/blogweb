@@ -6,6 +6,7 @@
  *
  * The .server suffix keeps this module out of the browser bundle.
  */
+import { waitUntil } from "@vercel/functions";
 import { api, ApiError } from "./api.server";
 import type { Article, ArticleSummary, Author, SearchEntry, Section } from "./types";
 
@@ -32,6 +33,16 @@ interface Entry {
 const cache = new Map<string, Entry>();
 
 /**
+ * Work that should finish after the response is sent. On Vercel, functions are
+ * frozen once they respond unless the work is registered with waitUntil;
+ * elsewhere it simply runs.
+ */
+function inBackground(work: Promise<unknown>) {
+  const settled = work.catch(() => undefined);
+  waitUntil(settled);
+}
+
+/**
  * Called after every admin change so readers see it on their next page load.
  * The most recently used pages are re-fetched straight away, so the next
  * reader gets fresh content without waiting on the database.
@@ -41,7 +52,7 @@ export function clearContentCache() {
   cache.clear();
   // This instance already knows about the change; don't clear again on the next version check.
   seenVersion = null;
-  for (const path of recent) void load(path).catch(() => undefined);
+  for (const path of recent) inBackground(load(path));
 }
 
 /*
@@ -58,16 +69,17 @@ let checkingVersion = false;
 function checkVersion() {
   if (checkingVersion || Date.now() - versionCheckedAt < VERSION_CHECK_MS) return;
   checkingVersion = true;
-  api<{ version: number }>("/version", { timeoutMs: 3000 })
-    .then(({ version }) => {
-      if (seenVersion !== null && version !== seenVersion) cache.clear();
-      seenVersion = version;
-    })
-    .catch(() => undefined)
-    .finally(() => {
-      checkingVersion = false;
-      versionCheckedAt = Date.now();
-    });
+  inBackground(
+    api<{ version: number }>("/version", { timeoutMs: 3000 })
+      .then(({ version }) => {
+        if (seenVersion !== null && version !== seenVersion) cache.clear();
+        seenVersion = version;
+      })
+      .finally(() => {
+        checkingVersion = false;
+        versionCheckedAt = Date.now();
+      }),
+  );
 }
 
 function load<T>(path: string) {
@@ -93,11 +105,14 @@ function cached<T>(path: string): Promise<T> {
     if (!hit.refreshing) {
       hit.refreshing = true;
       // Swap in the new value only once it has arrived.
-      api<T>(path)
-        .then((fresh) => cache.get(path) === hit && cache.set(path, { at: Date.now(), value: Promise.resolve(fresh) }))
-        .catch(() => {
-          hit.refreshing = false;
-        });
+      inBackground(
+        api<T>(path)
+          .then((fresh) => cache.get(path) === hit && cache.set(path, { at: Date.now(), value: Promise.resolve(fresh) }))
+          .catch((err) => {
+            hit.refreshing = false;
+            throw err;
+          }),
+      );
     }
     return hit.value as Promise<T>;
   }
@@ -118,7 +133,7 @@ async function maybe<T>(path: string): Promise<T | null> {
 // starts, so the first reader after a deploy does not wait on the database.
 if (process.env.NODE_ENV === "production") {
   setTimeout(() => {
-    for (const path of ["/site", "/home", "/most-read?limit=5", "/section-leads?per=3"]) void load(path).catch(() => undefined);
+    for (const path of ["/site", "/home", "/most-read?limit=5", "/section-leads?per=3"]) inBackground(load(path));
   }, 0);
 }
 

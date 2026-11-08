@@ -212,7 +212,7 @@ imagesRouter.post("/", upload.single("file"), async (req, res) => {
 
 imagesRouter.put("/:id", async (req, res) => {
   if (!isId(req.params.id)) throw notFound();
-  const doc = await Image.findByIdAndUpdate(req.params.id, parse(imageMeta, req.body), { new: true });
+  const doc = await Image.findByIdAndUpdate(req.params.id, parse(imageMeta, req.body), { returnDocument: "after" });
   if (!doc) throw notFound("That image no longer exists.");
   invalidateImages();
   res.json({ id: String(doc._id), ...toImageRef(doc) });
