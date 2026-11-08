@@ -50,6 +50,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="theme-color" content="#f3f4f1" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0b1626" media="(prefers-color-scheme: dark)" />
         <meta name="color-scheme" content="light dark" />
+        {/* Google Search Console ownership. Removing this un-verifies the site. */}
+        <meta name="google-site-verification" content="ZvTj3SyaIF-yX8w6kfXFGeePsCm5AgLURNkrOUI1QgA" />
         {site.ads.client ? <meta name="google-adsense-account" content={site.ads.client} /> : null}
         {sectionCss ? <style dangerouslySetInnerHTML={{ __html: sectionCss }} /> : null}
         <Meta />
