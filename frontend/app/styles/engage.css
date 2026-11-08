@@ -13,16 +13,16 @@
   bottom: var(--space-4);
   z-index: 100;
   display: grid;
-  gap: var(--space-3);
-  width: min(52rem, calc(100vw - 2rem));
+  gap: var(--space-2);
+  width: min(30rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);
   overflow-y: auto;
-  padding: var(--space-5);
+  padding: var(--space-4);
   border: 1px solid var(--rule-strong);
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--paper-raised);
   color: var(--ink);
-  box-shadow: 0 18px 50px rgb(8 17 32 / 0.28);
+  box-shadow: 0 12px 32px rgb(8 17 32 / 0.25);
   font-family: var(--font-sans);
   transform: translateX(-50%);
 }
@@ -33,42 +33,42 @@
 
 /* The policy pages stay readable behind the message, right to the end. */
 body:has(.consent--passive) {
-  padding-bottom: 16rem;
+  padding-bottom: 12rem;
 }
 
 .consent__title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .consent__text {
-  max-width: 44rem;
-  font-size: var(--text-ui);
-  line-height: 1.5;
+  font-size: var(--text-sm);
+  line-height: 1.45;
   color: var(--ink-soft);
 }
 
 .consent__choices {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin-top: var(--space-1);
 }
 
 /* All three carry the same visual weight, so no choice is steered. */
 .consent__choice {
-  display: grid;
-  align-content: start;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-4);
+  min-height: 2.5rem;
+  padding: 0.25rem;
   border: 1px solid var(--ink);
-  border-radius: 10px;
+  border-radius: 999px;
   background: var(--paper);
   color: var(--ink);
   font: inherit;
-  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
 }
@@ -77,17 +77,6 @@ body:has(.consent--passive) {
 .consent__choice[aria-pressed="true"] {
   background: var(--ink);
   color: var(--paper);
-}
-
-.consent__label {
-  font-size: var(--text-ui);
-  font-weight: 600;
-}
-
-.consent__detail {
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  opacity: 0.8;
 }
 
 .link-button {
@@ -100,23 +89,20 @@ body:has(.consent--passive) {
   cursor: pointer;
 }
 
-@media (max-width: 680px) {
-  body:has(.consent--passive) {
-    padding-bottom: 28rem;
-  }
-
+@media (max-width: 480px) {
   .consent {
     bottom: var(--space-2);
-    padding: var(--space-4);
+    padding: var(--space-3);
   }
 
+  /* Sized to their labels here, so the longest one is never cut off. */
   .consent__choices {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
+    grid-template-columns: repeat(3, auto);
   }
 
   .consent__choice {
-    padding: var(--space-2) var(--space-3);
+    min-height: 2.75rem;
+    font-size: 0.8125rem;
   }
 }
 

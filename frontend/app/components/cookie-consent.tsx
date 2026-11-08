@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { CONSENT_OPEN, getConsent, saveConsent, type ConsentChoice } from "~/lib/consent";
 
-const CHOICES: { value: ConsentChoice; label: string; detail: string }[] = [
-  { value: "accept", label: "Accept all", detail: "Essential cookies, plus analytics that show us what is read and for how long." },
-  { value: "essential", label: "Essentials only", detail: "Essential cookies. We count the page view anonymously, with nothing that identifies you." },
-  { value: "reject", label: "Reject all", detail: "We keep only the cookie that remembers this choice, and do not count your visit." },
+const CHOICES: { value: ConsentChoice; label: string }[] = [
+  { value: "accept", label: "Accept all" },
+  { value: "essential", label: "Essentials only" },
+  { value: "reject", label: "Reject all" },
 ];
 
 // People must be able to read these before deciding, so the dialog doesn't block them.
@@ -71,8 +71,8 @@ export function CookieConsent() {
           Your choice on cookies
         </h2>
         <p id="consent-text" className="consent__text">
-          Our analytics show us which stories people read, how long they stay and how far they get. They are our own, and we do not
-          sell the data. Choose what you are comfortable with; you can change it at any time. <Link to="/cookies">Read the cookie policy</Link>.
+          We use our own analytics to see which stories get read. Essentials only counts pages anonymously; Reject all counts nothing.
+          You can change this at any time. <Link to="/cookies">Cookie policy</Link>
         </p>
         <div className="consent__choices">
           {CHOICES.map((c) => (
@@ -83,8 +83,7 @@ export function CookieConsent() {
               aria-pressed={current === c.value || undefined}
               onClick={() => choose(c.value)}
             >
-              <span className="consent__label">{c.label}</span>
-              <span className="consent__detail">{c.detail}</span>
+              {c.label}
             </button>
           ))}
         </div>
