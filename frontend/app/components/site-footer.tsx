@@ -54,9 +54,6 @@ export function SiteFooter() {
               <ul className="site-footer__list">
                 <li><Link to="/newsletter">Newsletter</Link></li>
                 <li><a href="/rss.xml">RSS feed</a></li>
-                <li><a href={site.social.bluesky} rel="me noopener">Bluesky</a></li>
-                <li><a href={site.social.mastodon} rel="me noopener">Mastodon</a></li>
-                <li><a href={site.social.x} rel="me noopener">X</a></li>
               </ul>
             </nav>
           </div>

@@ -18,13 +18,10 @@ export const site = {
     corrections: "corrections@cosmoslens.com",
     privacy: "privacy@cosmoslens.com",
   },
-  // Handles not claimed yet. Register them, then update or remove any you don't get.
-  social: {
-    x: "https://x.com/cosmoslens",
-    bluesky: "https://bsky.app/profile/cosmoslens.com",
-    mastodon: "https://mastodon.social/@cosmoslens",
-  },
-  twitterHandle: "@cosmoslens",
+  // No official social accounts yet. Add full profile URLs here when there are
+  // real ones (for example x: "https://x.com/…") and link them in the footer.
+  social: {} as Record<string, string>,
+  twitterHandle: "",
   foundingYear: 2026,
   ogImage: "/images/stories/ultra-deep-field-og.jpg",
   ads: {
