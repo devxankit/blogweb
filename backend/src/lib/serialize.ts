@@ -129,6 +129,7 @@ export interface ArticleLike {
   body?: unknown[];
   wordCount: number;
   readingMinutes: number;
+  views?: number | null;
 }
 
 function authorOf(a: ArticleLike): AuthorLite {
@@ -155,11 +156,12 @@ export function summary(a: ArticleLike, images: Map<string, ImageRef>) {
     author: authorOf(a),
     readingMinutes: a.readingMinutes,
     wordCount: a.wordCount,
+    views: a.views ?? 0,
   };
 }
 
 export function fullArticle(a: ArticleLike, images: Map<string, ImageRef>) {
-  const { author, readingMinutes: _r, wordCount: _w, id: _id, ...rest } = summary(a, images);
+  const { author, readingMinutes: _r, wordCount: _w, views: _v, id: _id, ...rest } = summary(a, images);
   const body = ((a.body ?? []) as Block[]).map((b) => (b.type === "figure" ? { ...b, picture: picture(b.picture, images) } : b));
   return { ...rest, author: author.slug, body };
 }

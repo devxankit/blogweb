@@ -19,7 +19,7 @@ export default function Privacy() {
     <DocPage
       title="Privacy policy"
       lede="We collect as little about you as we can, and we tell you plainly what our advertising partners collect."
-      updated="2026-10-20"
+      updated="2026-11-08"
       sections={[
         {
           id: "summary",
@@ -40,12 +40,20 @@ export default function Privacy() {
             <>
               <p>
                 <strong>Information you give us.</strong> When you subscribe to the newsletter we store your email address. When you
-                contact us we store your message, your name and your email address so we can reply.
+                contact us we store your message, your name and your email address so we can reply. When you comment on a story we
+                store your name, your comment and, if you give it, your email address. Your name and comment are published once an
+                editor approves them; your email address is never shown.
               </p>
               <p>
                 <strong>Information collected automatically.</strong> Like most websites, our servers record basic technical
                 information such as your IP address, browser type and the pages you request, to keep the site secure and working.
-                We may use privacy-respecting analytics to understand which stories are read; these statistics are aggregated.
+              </p>
+              <p>
+                <strong>Analytics, if you allow it.</strong> If you choose “Accept all” on our cookie message, we record under a random
+                id which pages you open, how long you spend on them, how far you scroll, the website that sent you, your device type,
+                browser and country. We do not store your IP address with this data, and we keep it for up to 13 months. If you choose
+                “Essentials only”, we only add to an anonymous count of page views. If you choose “Reject all”, your visit is not
+                counted. Our <Link to="/cookies">cookie policy</Link> has the details, and you can change your choice there.
               </p>
               <p>
                 <strong>Preferences on your device.</strong> If you choose a light or dark theme, that choice is stored in your
@@ -94,9 +102,9 @@ export default function Privacy() {
           title: "Consent in the UK, EEA and Switzerland",
           body: (
             <p>
-              If you visit from the United Kingdom, the European Economic Area or Switzerland, we ask for your consent before
-              personalized ads or non-essential cookies are used, through a consent message shown on your first visit. You can change
-              your choice at any time from the privacy settings link that appears with that message.
+              We ask every visitor for a choice before non-essential cookies are used, through a message shown on the first visit. You
+              can change your choice at any time from the “Cookie settings” link at the bottom of every page. If you visit from the
+              United Kingdom, the European Economic Area or Switzerland, we also ask for your consent before personalized ads are used.
             </p>
           ),
         },
@@ -141,7 +149,8 @@ export default function Privacy() {
           title: "Retention and security",
           body: (
             <p>
-              We keep newsletter addresses until you unsubscribe and correspondence for as long as needed to deal with it. We use
+              We keep newsletter addresses until you unsubscribe, correspondence for as long as needed to deal with it, approved
+              comments until you ask us to remove them, and analytics records for up to 13 months. We use
               encryption in transit and restrict access to the people who need it.
             </p>
           ),

@@ -9,8 +9,11 @@ import type { Route } from "./+types/layout";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { user } = await requireUser(request);
-  const { unread } = await adminApi<{ unread: number }>(request, "/messages?filter=unread&limit=1");
-  return { user, unread };
+  const [{ unread }, comments] = await Promise.all([
+    adminApi<{ unread: number }>(request, "/messages?filter=unread&limit=1"),
+    adminApi<{ counts: { pending: number } }>(request, "/comments?status=pending&limit=1"),
+  ]);
+  return { user, unread, pendingComments: comments.counts.pending };
 }
 
 export const meta: Route.MetaFunction = () => [{ title: `Admin | ${site.name}` }, { name: "robots", content: "noindex, nofollow" }];
@@ -36,6 +39,8 @@ const NAV = [
   {
     group: "Readers",
     items: [
+      { to: "/admin/analytics", label: "Reader activity" },
+      { to: "/admin/comments", label: "Comments", badge: "pending" as const },
       { to: "/admin/subscribers", label: "Subscribers" },
       { to: "/admin/messages", label: "Messages", badge: "unread" as const },
     ],
@@ -43,7 +48,11 @@ const NAV = [
 ];
 
 export default function AdminLayout({ loaderData }: Route.ComponentProps) {
-  const { user, unread } = loaderData;
+  const { user, unread, pendingComments } = loaderData;
+  const badges = {
+    unread: { count: unread, label: "unread" },
+    pending: { count: pendingComments, label: "waiting for review" },
+  };
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigation = useNavigation();
@@ -77,9 +86,9 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
                   <li key={item.to}>
                     <NavLink to={item.to} end={"end" in item ? item.end : false} className="nr-nav__link" prefetch="intent">
                       {item.label}
-                      {"badge" in item && unread > 0 ? (
-                        <span className="nr-nav__badge" aria-label={`${unread} unread`}>
-                          {unread}
+                      {"badge" in item && item.badge && badges[item.badge].count > 0 ? (
+                        <span className="nr-nav__badge" aria-label={`${badges[item.badge].count} ${badges[item.badge].label}`}>
+                          {badges[item.badge].count}
                         </span>
                       ) : null}
                     </NavLink>

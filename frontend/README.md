@@ -69,7 +69,11 @@ of the browser.
   from the API's `/media`.
 - Newsletter sign-ups, contact messages and page views go to `/forms/*` on this
   server, which passes them to the API with the reader's IP (for rate limits).
-  Bots and link prefetches are not counted as views.
+  Bots, link prefetches and signed-in staff are not counted as views.
+- The cookie choice is made and stored in the browser (`lib/consent.ts`,
+  `components/cookie-consent.tsx`), because public pages are cached and shared
+  between visitors. Never read it in a loader or set a cookie on a public response.
+  `lib/analytics.ts` measures only as far as that choice allows.
 
 ## Admin panel
 
@@ -80,6 +84,10 @@ kept out of search engines (`noindex`, and `Disallow: /admin` in robots.txt).
 - **Dashboard:** page views per day, most-read stories, views by section, new
   subscribers per day, most-visited pages, recent edits and messages, for the last
   7, 30 or 90 days.
+- **Reader activity:** for visitors who accepted analytics: time per visit, what
+  got attention, how far stories are read, sources, countries, devices, recent
+  visits and cookie choices.
+- **Comments:** approve, reject or delete reader comments before they appear.
 - **Stories:** filter by status, section and author, search, publish or unpublish
   in one click. The editor has headline, standfirst and a block editor for the
   body (paragraphs with bold, italic and links, headings, pull quotes, images,

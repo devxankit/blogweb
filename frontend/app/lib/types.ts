@@ -85,6 +85,15 @@ export interface ArticleSummary extends Omit<Article, "body" | "author"> {
   author: Pick<Author, "slug" | "name">;
   readingMinutes: number;
   wordCount: number;
+  views: number;
+}
+
+/** An approved reader comment. */
+export interface StoryComment {
+  id: string;
+  name: string;
+  body: string;
+  createdAt: string;
 }
 
 export type SearchEntry = Pick<

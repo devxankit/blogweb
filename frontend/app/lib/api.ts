@@ -31,12 +31,16 @@ export function sendContactMessage(input: { name: string; email: string; topic: 
   return post("/forms/contact", input);
 }
 
-/** Records a page view. Fire-and-forget; never blocks navigation. */
-export function trackPageView(path: string) {
-  const body = JSON.stringify({ path });
+export function postComment(input: { slug: string; name: string; email: string; body: string; website: string }) {
+  return post("/forms/comment", input);
+}
+
+/** Sends data without waiting for a reply, even as the page closes. Never blocks navigation. */
+export function beacon(url: string, data: unknown) {
+  const body = JSON.stringify(data);
   try {
-    if (navigator.sendBeacon?.("/forms/track", new Blob([body], { type: "application/json" }))) return;
-    void fetch("/forms/track", { method: "POST", body, headers: { "content-type": "application/json" }, keepalive: true });
+    if (navigator.sendBeacon?.(url, new Blob([body], { type: "application/json" }))) return;
+    void fetch(url, { method: "POST", body, headers: { "content-type": "application/json" }, keepalive: true });
   } catch {
     // Analytics must never break the page.
   }

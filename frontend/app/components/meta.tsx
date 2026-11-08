@@ -26,6 +26,11 @@ export function Kicker({ section, format, link = true }: { section: SectionSlug;
   );
 }
 
+/** "1 view", "1,284 views". */
+export function formatViews(n: number) {
+  return `${n.toLocaleString("en-US")} ${n === 1 ? "view" : "views"}`;
+}
+
 export function StoryMeta({ story, showAuthor = true }: { story: ArticleSummary; showAuthor?: boolean }) {
   return (
     <p className="meta">
@@ -36,6 +41,7 @@ export function StoryMeta({ story, showAuthor = true }: { story: ArticleSummary;
       ) : null}
       <time dateTime={story.publishedAt}>{formatDate(story.publishedAt)}</time>
       <span>{story.readingMinutes} min read</span>
+      {story.views > 0 ? <span>{formatViews(story.views)}</span> : null}
     </p>
   );
 }

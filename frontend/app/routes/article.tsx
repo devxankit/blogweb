@@ -2,14 +2,15 @@ import { useMemo, useRef } from "react";
 import { data, Link } from "react-router";
 import { AdSlot } from "~/components/ad-slot";
 import { ArticleBody } from "~/components/article-body";
+import { Comments } from "~/components/comments";
 import { Caption, Img } from "~/components/img";
-import { Kicker, Monogram } from "~/components/meta";
+import { formatViews, Kicker, Monogram } from "~/components/meta";
 import { Breadcrumbs } from "~/components/nav-bits";
 import { headingsOf, SpectrumBar, TableOfContents, useReading } from "~/components/reading";
 import { ShareLinks } from "~/components/share";
 import { StoryCard } from "~/components/story";
 import { absoluteUrl } from "~/config/site";
-import { getArticle } from "~/lib/content.server";
+import { getArticle, getComments } from "~/lib/content.server";
 import { ogImageUrl } from "~/lib/images";
 import { seo } from "~/lib/seo";
 import { articleSchema, breadcrumbs } from "~/lib/structured-data";
@@ -17,9 +18,9 @@ import { formatDate, slugify } from "~/lib/text";
 import type { Route } from "./+types/article";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const result = await getArticle(params.slug);
+  const [result, comments] = await Promise.all([getArticle(params.slug), getComments(params.slug)]);
   if (!result) throw data(null, { status: 404 });
-  return result;
+  return { ...result, comments };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -52,7 +53,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 };
 
 export default function ArticlePage({ loaderData }: Route.ComponentProps) {
-  const { article, summary, author, section, related, newer, older } = loaderData;
+  const { article, summary, author, section, related, newer, older, comments } = loaderData;
   const bodyRef = useRef<HTMLDivElement>(null);
   const headings = useMemo(() => headingsOf(article.body), [article.body]);
   const { marks, active, barRef } = useReading(bodyRef, headings);
@@ -94,6 +95,8 @@ export default function ArticlePage({ loaderData }: Route.ComponentProps) {
                   </span>
                 ) : null}
                 <span>{summary.readingMinutes} min read</span>
+                {summary.views > 0 ? <span>{formatViews(summary.views)}</span> : null}
+                <a href="#comments">{comments.length ? `${comments.length} ${comments.length === 1 ? "comment" : "comments"}` : "Comment"}</a>
               </span>
             </div>
           </div>
@@ -137,6 +140,8 @@ export default function ArticlePage({ loaderData }: Route.ComponentProps) {
               </div>
             </div>
           </footer>
+
+          <Comments slug={article.slug} comments={comments} />
 
           <nav className="adjacent" aria-label="More stories">
             {older ? (

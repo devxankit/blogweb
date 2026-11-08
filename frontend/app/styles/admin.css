@@ -1178,6 +1178,19 @@
   text-align: right;
 }
 
+.nr-table-wrap--flush {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.nr-journey {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
 /* ---------- People, sections, media, messages ---------- */
 
 .nr-people,

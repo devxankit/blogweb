@@ -80,7 +80,11 @@ Everything is JSON under `/api`.
 | `GET /tags`, `GET /tags/:slug` | Topics and their stories |
 | `GET /search-index`, `GET /sitemap` | Search and sitemap data |
 | `POST /subscribe`, `POST /contact` | Newsletter sign-up, contact form (rate-limited) |
+| `GET /articles/:slug/comments` | Approved comments on a story |
+| `POST /comment` | A reader comment, held for review (rate-limited) |
 | `POST /track` | A page view (frontend server only, needs `INTERNAL_API_KEY`) |
+| `POST /analytics`, `POST /analytics/forget` | Consented reading activity, and erasing it (frontend server only) |
+| `POST /consent` | Adds to the daily total of cookie choices (frontend server only) |
 
 **Sign-in:** `POST /auth/login`, `GET /auth/me`, `POST /auth/password`.
 
@@ -120,6 +124,13 @@ The site reports one page view per page a reader opens. Bots, link prefetches an
 admin pages are not counted. Views are stored as daily counters per path, which
 gives the dashboard its views per day, most-read stories, views by section and
 most-visited pages. Nothing personal is stored.
+
+Visitors who choose "Accept all" also produce one `Visit` record per page: random
+visitor and session ids, active seconds, scroll depth, referring host, country and
+broad device facts. IP addresses and raw user agents are not stored, records expire
+after 395 days, and withdrawing consent deletes them. This feeds **Reader activity**
+in the admin panel. People who choose "Reject all" are not counted anywhere except
+in the daily total of choices, which identifies no one.
 
 ## Caching
 

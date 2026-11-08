@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { site } from "~/config/site";
+import { openConsentSettings } from "~/lib/consent";
 import { useSections } from "~/lib/sections";
 import { NewsletterBlock } from "./newsletter";
 
@@ -66,6 +67,7 @@ export function SiteFooter() {
             <ul className="inline-list">
               <li><Link to="/privacy">Privacy</Link></li>
               <li><Link to="/cookies">Cookies</Link></li>
+              <li><button type="button" className="link-button" onClick={openConsentSettings}>Cookie settings</button></li>
               <li><Link to="/terms">Terms</Link></li>
               <li><a href="/sitemap.xml">Sitemap</a></li>
             </ul>

@@ -174,6 +174,68 @@ pageViewSchema.index({ day: 1, path: 1 }, { unique: true });
 pageViewSchema.index({ article: 1, day: 1 });
 export const PageView = model("PageView", pageViewSchema);
 
+/*
+ * Reader activity: one document per page view, recorded only for visitors who
+ * accepted analytics cookies. Holds random ids, never an IP address or name.
+ * Deleted automatically after about 13 months.
+ */
+
+const VISIT_TTL_SECONDS = 60 * 60 * 24 * 395;
+
+const visitSchema = new Schema({
+  /** Random id for this one page view; later updates refer to it. */
+  pv: { type: String, required: true, unique: true },
+  vid: { type: String, required: true, index: true },
+  sid: { type: String, required: true },
+  at: { type: Date, required: true, default: () => new Date(), expires: VISIT_TTL_SECONDS },
+  path: { type: String, required: true },
+  /** Set when the page is a story. */
+  slug: { type: String, default: "" },
+  /** Host name of the site that sent the visitor; empty means direct. */
+  referrer: { type: String, default: "" },
+  returning: { type: Boolean, default: false },
+  country: { type: String, default: "" },
+  device: { type: String, default: "" },
+  browser: { type: String, default: "" },
+  os: { type: String, default: "" },
+  /** Seconds the page was visible and the reader active. */
+  activeSeconds: { type: Number, default: 0 },
+  /** How far down the page or story the reader got, 0 to 100. */
+  depth: { type: Number, default: 0 },
+});
+export const Visit = model("Visit", visitSchema);
+
+/* Daily totals of cookie choices. No identifiers. */
+
+export const CONSENT_CHOICES = ["accept", "essential", "reject"] as const;
+
+const consentDaySchema = new Schema({
+  day: { type: String, required: true, unique: true },
+  accept: { type: Number, default: 0 },
+  essential: { type: Number, default: 0 },
+  reject: { type: Number, default: 0 },
+});
+export const ConsentDay = model("ConsentDay", consentDaySchema);
+
+/* Reader comments. Nothing appears on the site until it is approved. */
+
+export const COMMENT_STATUSES = ["pending", "approved", "rejected"] as const;
+
+const commentSchema = new Schema(
+  {
+    article: { type: Schema.Types.ObjectId, ref: "Article", required: true },
+    name: { type: String, required: true, trim: true },
+    /** Optional, for an editor to reply. Never shown on the site. */
+    email: { type: String, default: "", lowercase: true, trim: true },
+    body: { type: String, required: true },
+    status: { type: String, enum: COMMENT_STATUSES, default: "pending" },
+  },
+  { timestamps: true },
+);
+commentSchema.index({ article: 1, status: 1, createdAt: 1 });
+commentSchema.index({ status: 1, createdAt: -1 });
+export const Comment = model("Comment", commentSchema);
+
 /* Site-wide editorial settings: a single document with key "site" */
 
 const settingsSchema = new Schema(

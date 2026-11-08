@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Router, type Request } from "express";
 import { rateLimit } from "express-rate-limit";
 import { z } from "zod";
 import { config } from "../config";
 import { clientIp, HttpError, intParam, notFound, parse } from "../lib/http";
 import { authorMap, authorOut, fullArticle, imageMap, sectionList, summary, type ArticleLike } from "../lib/serialize";
 import { dayKey, slugify } from "../lib/text";
-import { Article, getSettings, Message, PageView, Subscriber, TOPICS } from "../models";
+import { Article, Comment, CONSENT_CHOICES, ConsentDay, getSettings, Message, PageView, Subscriber, TOPICS, Visit } from "../models";
 
 /**
  * Read-only content API for the public site, plus the reader forms
@@ -297,10 +297,129 @@ publicRouter.post("/contact", formLimiter, async (req, res) => {
   res.json({ ok: true });
 });
 
+/* Comments: readers see approved ones; new ones wait for an editor. */
+
+publicRouter.get("/articles/:slug/comments", async (req, res) => {
+  const article = await Article.findOne({ ...live(), slug: req.params.slug }).select("_id").lean();
+  if (!article) throw notFound();
+  const comments = await Comment.find({ article: article._id, status: "approved" }).sort({ createdAt: 1 }).limit(500).lean();
+  res.json(comments.map((c) => ({ id: String(c._id), name: c.name, body: c.body, createdAt: c.createdAt })));
+});
+
+publicRouter.post("/comment", formLimiter, async (req, res) => {
+  const input = parse(
+    z.object({
+      slug: z.string().max(200),
+      name: z.string().trim().min(2, "Enter your name.").max(60, "Keep your name under 60 characters."),
+      email: z.union([z.literal(""), email]).default(""),
+      body: z.string().trim().min(3, "Write a comment first.").max(2000, "Keep comments under 2,000 characters."),
+      /** Hidden from people; only bots fill it in. */
+      website: z.string().max(200).default(""),
+    }),
+    req.body,
+  );
+  if (input.website) {
+    res.json({ ok: true });
+    return;
+  }
+  const article = await Article.findOne({ ...live(), slug: input.slug }).select("_id").lean();
+  if (!article) throw notFound("That story no longer exists.");
+  await Comment.create({ article: article._id, name: input.name, email: input.email, body: input.body });
+  res.json({ ok: true });
+});
+
+/* Requests below come only from the site's own server, which adds the internal key. */
+
+function requireInternal(req: Request) {
+  if (!config.internalKey || req.get("x-internal-key") !== config.internalKey) throw new HttpError(403, "Forbidden");
+}
+
+const analyticsLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 120,
+  keyGenerator: (req) => clientIp(req),
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { error: "Too many requests." },
+});
+
+const randomId = z.string().regex(/^[0-9a-f-]{36}$/);
+const shortText = z.string().trim().max(40).default("");
+
+/** A page view from a visitor who accepted analytics. Sent again with growing totals as they read. */
+publicRouter.post("/analytics", analyticsLimiter, async (req, res) => {
+  requireInternal(req);
+  const input = parse(
+    z.object({
+      pv: randomId,
+      vid: randomId,
+      sid: randomId,
+      path: z.string().regex(/^\/[A-Za-z0-9._~\/-]*$/).max(300),
+      referrer: z.string().trim().toLowerCase().regex(/^[a-z0-9.-]*$/).max(120).default(""),
+      returning: z.boolean().default(false),
+      active: z.number().int().min(0).max(4 * 3600),
+      depth: z.number().int().min(0).max(100),
+      country: shortText,
+      device: shortText,
+      browser: shortText,
+      os: shortText,
+    }),
+    req.body,
+  );
+  const path = input.path.replace(/\/+$/, "") || "/";
+  if (path.startsWith("/admin") || path.startsWith("/forms")) {
+    res.status(204).end();
+    return;
+  }
+  const slug = /^\/articles\/([a-z0-9-]+)$/.exec(path)?.[1] ?? "";
+  await Visit.updateOne(
+    { pv: input.pv },
+    {
+      $setOnInsert: {
+        vid: input.vid,
+        sid: input.sid,
+        at: new Date(),
+        path,
+        slug,
+        referrer: input.referrer,
+        returning: input.returning,
+        country: input.country,
+        device: input.device,
+        browser: input.browser,
+        os: input.os,
+      },
+      $max: { activeSeconds: input.active, depth: input.depth },
+    },
+    { upsert: true },
+  ).catch((err) => {
+    // Two updates for a new page view can race; the second simply loses.
+    if (err?.code !== 11000) throw err;
+  });
+  res.status(204).end();
+});
+
+/** A visitor withdrew consent: erase what was recorded under their random id. */
+publicRouter.post("/analytics/forget", analyticsLimiter, async (req, res) => {
+  requireInternal(req);
+  const { vid } = parse(z.object({ vid: randomId }), req.body);
+  await Visit.deleteMany({ vid });
+  res.status(204).end();
+});
+
+/** Adds one to today's total for a cookie choice. Nothing identifies who chose. */
+publicRouter.post("/consent", analyticsLimiter, async (req, res) => {
+  requireInternal(req);
+  const { choice } = parse(z.object({ choice: z.enum(CONSENT_CHOICES) }), req.body);
+  await ConsentDay.updateOne({ day: dayKey() }, { $inc: { [choice]: 1 } }, { upsert: true }).catch((err) => {
+    if (err?.code !== 11000) throw err;
+  });
+  res.status(204).end();
+});
+
 /* Page views, reported by the frontend server (which filters out bots). */
 
 publicRouter.post("/track", async (req, res) => {
-  if (!config.internalKey || req.get("x-internal-key") !== config.internalKey) throw new HttpError(403, "Forbidden");
+  requireInternal(req);
   const input = parse(z.object({ path: z.string().startsWith("/").max(300) }), req.body);
   const path = input.path.split(/[?#]/)[0].replace(/\/+$/, "") || "/";
   if (path.startsWith("/admin")) {

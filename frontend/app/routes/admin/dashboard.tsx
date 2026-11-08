@@ -40,7 +40,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
   return (
     <AdminPage
       title={`Welcome back, ${user.name}`}
-      lede="Readership, publishing and reader mail at a glance. Page views are counted for readers only: bots and admin pages are left out."
+      lede="Readership, publishing and reader mail at a glance. Page views exclude bots, staff and anyone who rejected cookies."
       actions={
         <Link to="/admin/articles/new" className="button">
           New story

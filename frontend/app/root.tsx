@@ -3,11 +3,12 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, 
 import type { Route } from "./+types/root";
 import "./app.css";
 import displayFont from "./assets/fonts/newsreader-display.woff2?url";
+import { CookieConsent } from "./components/cookie-consent";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { NotFound } from "./components/not-found";
 import { site } from "./config/site";
-import { trackPageView } from "./lib/api";
+import { stopTracking, trackPage } from "./lib/analytics";
 import { getSiteData } from "./lib/content.server";
 import { sectionColorCss } from "./lib/sections";
 
@@ -70,6 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               {children}
             </main>
             <SiteFooter />
+            <CookieConsent />
           </>
         )}
         <ScrollRestoration />
@@ -84,7 +86,9 @@ export default function App() {
 
   // One page view per page, counted in the API's daily statistics.
   useEffect(() => {
-    if (!pathname.startsWith("/admin")) trackPageView(pathname);
+    // Measured only as far as the visitor's cookie choice allows.
+    if (pathname === "/admin" || pathname.startsWith("/admin/")) stopTracking();
+    else trackPage(pathname);
   }, [pathname]);
 
   return <Outlet />;

@@ -8,7 +8,7 @@
  */
 import { waitUntil } from "@vercel/functions";
 import { api, ApiError } from "./api.server";
-import type { Article, ArticleSummary, Author, SearchEntry, Section } from "./types";
+import type { Article, ArticleSummary, Author, SearchEntry, Section, StoryComment } from "./types";
 
 export const PAGE_SIZE = 9;
 /** Fresh for a minute; after that, served from memory while a refresh runs in the background. */
@@ -203,6 +203,12 @@ export interface ArticleData {
 export function getArticle(slug: string) {
   if (!/^[a-z0-9-]+$/.test(slug)) return Promise.resolve(null);
   return maybe<ArticleData>(`/articles/${slug}`);
+}
+
+/** Approved comments on a story. A failure here must not take the story down. */
+export async function getComments(slug: string) {
+  if (!/^[a-z0-9-]+$/.test(slug)) return [];
+  return (await maybe<StoryComment[]>(`/articles/${slug}/comments`).catch(() => null)) ?? [];
 }
 
 export function getMostRead(limit = 5) {

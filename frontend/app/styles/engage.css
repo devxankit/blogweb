@@ -1,0 +1,218 @@
+/* ---------- Cookie choice ---------- */
+
+.consent-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgb(8 17 32 / 0.5);
+}
+
+.consent {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-4);
+  z-index: 100;
+  display: grid;
+  gap: var(--space-3);
+  width: min(52rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: var(--space-5);
+  border: 1px solid var(--rule-strong);
+  border-radius: 14px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  box-shadow: 0 18px 50px rgb(8 17 32 / 0.28);
+  font-family: var(--font-sans);
+  transform: translateX(-50%);
+}
+
+.consent:focus {
+  outline: none;
+}
+
+/* The policy pages stay readable behind the message, right to the end. */
+body:has(.consent--passive) {
+  padding-bottom: 16rem;
+}
+
+.consent__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.consent__text {
+  max-width: 44rem;
+  font-size: var(--text-ui);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.consent__choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+/* All three carry the same visual weight, so no choice is steered. */
+.consent__choice {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.consent__choice:hover,
+.consent__choice[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.consent__label {
+  font-size: var(--text-ui);
+  font-weight: 600;
+}
+
+.consent__detail {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  body:has(.consent--passive) {
+    padding-bottom: 28rem;
+  }
+
+  .consent {
+    bottom: var(--space-2);
+    padding: var(--space-4);
+  }
+
+  .consent__choices {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .consent__choice {
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+/* ---------- Comments ---------- */
+
+.comments {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 5rem;
+}
+
+.comments__title {
+  font-size: var(--text-h3);
+  font-weight: 400;
+}
+
+.comments__empty {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  color: var(--muted);
+}
+
+.comments__list {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.comment {
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--rule);
+}
+
+.comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.comment__name {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.comment__body {
+  margin-top: var(--space-2);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.comments__form {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.comments__form-title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.comments__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.comments__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.comments__submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.comments__submit .form-note {
+  margin-top: 0;
+}
+
+@media (max-width: 560px) {
+  .comments__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
