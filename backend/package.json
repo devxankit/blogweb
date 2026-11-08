@@ -8,10 +8,10 @@
     "start": "tsx --env-file=.env src/index.ts",
     "seed": "tsx --env-file=.env src/seed.ts",
     "typecheck": "tsc --noEmit",
-    "build": "esbuild src/app.ts --bundle --platform=node --target=node22 --format=esm --packages=external --outfile=dist/app.js"
+    "build": "node build.mjs"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": "22.x"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.2",
