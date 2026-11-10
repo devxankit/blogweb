@@ -123,12 +123,13 @@ async function bing(seed: string) {
       const exact = await getJson<{ d: BingKeyword | null }>(`${base}/GetKeyword?${qs}`);
       const related = await getJson<{ d: BingKeyword[] | null }>(`${base}/GetRelatedKeywords?${qs}`);
       // Bing's related list can wander far off topic (electricity bills for "light year"),
-      // so keep only searches that share a word with the topic.
+      // so keep only searches that share at least two of the topic's words (or its one word).
       const words = seed.split(/\s+/).filter((w) => w.length > 2);
+      const needed = Math.min(words.length, 2);
       results[country] = {
         exact: exact.d,
         related: (related.d ?? [])
-          .filter((k) => words.some((w) => k.Query.toLowerCase().includes(w)))
+          .filter((k) => words.filter((w) => k.Query.toLowerCase().includes(w)).length >= needed)
           .sort((a, b) => b.Impressions - a.Impressions)
           .slice(0, 25),
       };
