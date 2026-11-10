@@ -4,7 +4,7 @@ export const planets: Article[] = [
   {
     slug: "an-ocean-under-the-ice",
     title: "An ocean under the ice, and a spacecraft on its way",
-    seoTitle: "Europa’s hidden ocean and NASA’s Europa Clipper",
+    seoTitle: "Jupiter’s moon Europa and its hidden ocean",
     dek: "Jupiter’s moon Europa probably holds about twice as much liquid water as all of Earth’s oceans. Juno has now measured the ice above it, and Europa Clipper arrives in 2030 to ask whether that ocean could support life.",
     seoDescription:
       "What we know about the ocean beneath Europa’s ice shell, what Juno’s measurement of the ice revealed, and what NASA’s Europa Clipper will do at Jupiter in 2030.",

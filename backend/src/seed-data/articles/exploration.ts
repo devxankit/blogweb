@@ -141,7 +141,7 @@ export const exploration: Article[] = [
   {
     slug: "earthrise-and-every-picture-of-home",
     title: "Earthrise, and every picture of home since",
-    seoTitle: "Earthrise and why photos of Earth still matter",
+    seoTitle: "Earth from space: Earthrise and photos of home",
     dek: "A photograph taken on Christmas Eve 1968 changed how people saw the planet, and it was turned on its side before anyone saw it. What the most famous pictures of Earth show, and what we did to them.",
     seoDescription:
       "From Apollo 8’s Earthrise to the Blue Marble and the Pale Blue Dot: an essay on why photographs of Earth still matter, and how we quietly edited them.",

@@ -4,7 +4,7 @@ export const cosmos: Article[] = [
   {
     slug: "the-universe-is-expanding-at-two-speeds",
     title: "The universe is expanding at two different speeds",
-    seoTitle: "Hubble tension: why expansion rates disagree",
+    seoTitle: "Expansion of the universe: the Hubble tension",
     dek: "Measure the expansion rate from the early universe and you get one number. Measure it from nearby galaxies and you get another. A decade of better data has made the gap harder to explain away.",
     seoDescription:
       "The Hubble tension explained: why measurements of the universe’s expansion rate disagree, what the James Webb Space Telescope found, and what could resolve it.",
