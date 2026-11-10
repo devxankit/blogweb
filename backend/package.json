@@ -7,6 +7,7 @@
     "dev": "tsx watch --env-file=.env src/index.ts",
     "start": "tsx --env-file=.env src/index.ts",
     "seed": "tsx --env-file=.env src/seed.ts",
+    "keywords": "tsx --env-file=.env scripts/keyword-research.ts",
     "typecheck": "tsc --noEmit",
     "build": "node build.mjs"
   },

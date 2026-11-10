@@ -29,10 +29,18 @@ images, authors and sections in memory (see Caching).
 | `SEED_ADMIN_*`, `SEED_EDITOR_*` | Name, email and password of the accounts `npm run seed` creates |
 | `GSC_SERVICE_ACCOUNT_JSON` | Optional. The whole JSON key of a Google service account that is a user of the Search Console property. Powers the admin panel's Google Search page |
 | `GSC_SITE_URL` | Optional. The Search Console property, with its trailing slash. Defaults to `https://www.cosmoslens.com/` |
+| `GSC_KEY_FILE`, `BING_WEBMASTER_API_KEY` | Optional, local only. Used by `npm run keywords` (see Keyword research) |
 | `PORT` | Defaults to 4000 |
 
 Generate secrets with
 `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`.
+
+## Keyword research
+
+`npm run keywords -- "solar eclipse 2027" "gaganyaan"` checks the demand for story
+topics from free sources: Google autocomplete (India and US), Wikipedia page views,
+Bing search counts and the searches this site already appears for in Search Console.
+Each source is skipped when it is not set up. Add `--json` for machine-readable output.
 
 ## The seed
 
