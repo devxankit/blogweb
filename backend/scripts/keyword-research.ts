@@ -122,9 +122,15 @@ async function bing(seed: string) {
     try {
       const exact = await getJson<{ d: BingKeyword | null }>(`${base}/GetKeyword?${qs}`);
       const related = await getJson<{ d: BingKeyword[] | null }>(`${base}/GetRelatedKeywords?${qs}`);
+      // Bing's related list can wander far off topic (electricity bills for "light year"),
+      // so keep only searches that share a word with the topic.
+      const words = seed.split(/\s+/).filter((w) => w.length > 2);
       results[country] = {
         exact: exact.d,
-        related: (related.d ?? []).sort((a, b) => b.Impressions - a.Impressions).slice(0, 25),
+        related: (related.d ?? [])
+          .filter((k) => words.some((w) => k.Query.toLowerCase().includes(w)))
+          .sort((a, b) => b.Impressions - a.Impressions)
+          .slice(0, 25),
       };
     } catch (e) {
       results[country] = { error: e instanceof Error ? e.message.replace(key, "***") : String(e) };
@@ -222,8 +228,23 @@ if (asJson) {
     console.log("\n## Wikipedia interest (average monthly views, last 3 months)");
     if (Array.isArray(r.wikipedia)) for (const w of r.wikipedia) console.log(`  ${String(w.monthlyViews ?? "n/a").padStart(9)}  ${w.title}`);
     else console.log("  ", r.wikipedia);
-    console.log("\n## Bing searches");
-    console.log(JSON.stringify(r.bing, null, 2).replace(/^/gm, "  "));
+    console.log("\n## Bing searches (exact phrase / including longer phrases, total over the period)");
+    const b = r.bing as { status?: string; error?: string; period?: string } & Record<string, { exact?: BingKeyword | null; related?: BingKeyword[]; error?: string }>;
+    if (b.status || b.error) console.log("  ", b.status ?? b.error);
+    else {
+      console.log(`  ${b.period}`);
+      for (const [country, label] of [["in", "India"], ["us", "US"]]) {
+        const c = b[country];
+        if (!c) continue;
+        if (c.error) {
+          console.log(`  ${label}: ${c.error}`);
+          continue;
+        }
+        console.log(`  ${label}:`);
+        for (const k of [...(c.exact ? [c.exact] : []), ...(c.related ?? []).slice(0, 15)])
+          console.log(`    ${String(k.Impressions).padStart(9)} / ${String(k.BroadImpressions).padEnd(9)} ${k.Query}`);
+      }
+    }
     console.log("\n## Already appearing in Google (Search Console, last 90 days)");
     if (Array.isArray(r.searchConsole)) {
       if (!r.searchConsole.length) console.log("  none yet");
