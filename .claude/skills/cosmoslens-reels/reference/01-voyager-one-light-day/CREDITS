@@ -1,0 +1,36 @@
+CosmosLens Reel 01, "One Light-Day": third-party assets and their licences
+Motion graphics, the light-time clock, the Golden Record, transitions, captions and end card are drawn in code (film.js).
+No generated images, no stock footage.
+
+Images and models (NASA: not copyrighted in the US; NASA media guidelines apply, no endorsement implied)
+  Earth over India: DSCOVR EPIC natural-colour image, 20 Apr 2026 06:19 UTC, NASA EPIC Team
+    https://epic.gsfc.nasa.gov/archive/natural/2026/04/20/png/epic_1b_20260420061922.png
+  The Moon: LRO colour map, CGI Moon Kit, NASA's Scientific Visualization Studio
+    https://svs.gsfc.nasa.gov/4720/
+  Star field: Deep Star Maps 2020, NASA/Goddard Space Flight Center Scientific Visualization Studio
+    https://svs.gsfc.nasa.gov/4851/
+  Neptune (Voyager 2, 1989): PIA01492, NASA/JPL
+    https://images.nasa.gov/details/PIA01492
+  Voyager spacecraft 3D model: NASA 3D Resources, "Voyager Probe (B)"
+    https://github.com/nasa/NASA-3D-Resources
+  Pale Blue Dot Revisited (Voyager 1, 14 Feb 1990; 2020 remaster): PIA23645, NASA/JPL-Caltech
+    https://images.nasa.gov/details/PIA23645
+
+Fonts (SIL Open Font License 1.1, fonts/OFL.txt)
+  Schibsted Grotesk; Newsreader Display; Noto Sans Devanagari (subset)
+
+Voice
+  Kokoro-82M (Apache 2.0) via kokoro-onnx: af_heart (English), hf_alpha (Hindi). Checked with faster-whisper (MIT).
+
+Music (original score, music.py; raga Bhairavi's scale, no melody from any recording)
+  Samples: Versilian Studios Chamber Orchestra 2 Community Edition and Versilian Community Sample Library: CC0 1.0
+  Salamander Grand Piano V3 by Alexander Holm, CC BY 3.0 (credit required)
+  Tanpura-style drone: physically modelled (pluck.py), no samples
+
+Mentioned, not used: Kesarbai Kerkar's recording "Jaat Kahan Ho" on the Voyager Golden Record. Its audio is not in this film.
+
+Foley and ambience: original, synthesised in mix.py.
+Render tools: Lemo-Opuscar library (MIT).
+
+Short credit line for the post (needed for the CC BY piano):
+  "Images: NASA/JPL-Caltech, NASA EPIC, NASA SVS. Piano: Salamander Grand Piano by Alexander Holm (CC BY 3.0)."

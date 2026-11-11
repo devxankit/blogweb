@@ -1,0 +1,12 @@
+[
+ {"id": "l01", "text": "Send a message to Voyager One today, and it won't arrive until tomorrow.", "sub": "Send a message to Voyager 1 today, and it won't arrive until tomorrow.", "voice": "af_heart", "speed": 1.0, "lang": "en-us"},
+ {"id": "l02", "text": "On November eighteenth, it becomes the first human-made object one full light-day from Earth.", "sub": "On November 18th, it becomes the first human-made object one full light-day from Earth.", "voice": "af_heart", "speed": 1.0, "lang": "en-us", "asr": "On November 18th, it becomes the first human-made object one full light day from Earth."},
+ {"id": "l03", "text": "Your message passes the Moon in about a second.", "voice": "af_heart", "speed": 1.0, "lang": "en-us"},
+ {"id": "l04", "text": "Neptune, in four hours.", "voice": "af_heart", "speed": 0.95, "lang": "en-us"},
+ {"id": "l05", "text": "Then, twenty more hours of nothing.", "voice": "af_heart", "speed": 0.9, "lang": "en-us"},
+ {"id": "l06", "text": "Until, there. Launched in nineteen seventy-seven, it still talks to us on twenty-two watts. Less than a fridge bulb.", "sub": "Until... there. Launched in 1977, it still talks to us on 22 watts. Less than a fridge bulb.", "voice": "af_heart", "speed": 1.05, "lang": "en-us", "asr": "Until there, launched in 1977, it still talks to us on 22 watts, less than a fridge bulb."},
+ {"id": "l07", "text": "On board: a golden record, with an Indian raga, Jaat Kahan Ho. Where are you going?", "sub": "On board: a golden record, with an Indian raga, \"Jaat Kahan Ho\". Where are you going?", "voice": "af_heart", "speed": 1.0, "lang": "en-us", "asr": "On board, a golden record with an Indian raga, Jhat Kehan Ho. Where are you going?"},
+ {"id": "l08", "text": "In nineteen ninety, before its cameras went dark forever, it turned around for one last look at home.", "sub": "In 1990, before its cameras went dark forever, it turned around for one last look at home.", "voice": "af_heart", "speed": 0.95, "lang": "en-us", "asr": "In 1990, before its cameras went dark forever, it turned around for one last look at home."},
+ {"id": "l09", "text": "That's us. All of us, smaller than one pixel.", "voice": "af_heart", "speed": 0.88, "lang": "en-us"},
+ {"id": "l10", "text": "So if your message reaches it tomorrow, what would you send?", "voice": "af_heart", "speed": 0.95, "lang": "en-us"}
+]
